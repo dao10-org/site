@@ -1,0 +1,12 @@
+<ul class="post-list">
+{% for p in list %}
+  {% set pd = p.data.dojo | dojo(collections.dojos_zh) %}
+  <li>
+    <a class="post-title" href="{{ p.url }}">{{ p.data.title }}</a>
+    <span class="meta">{% if p.data.anonymous %}<span class="badge anon">匿名</span>{% endif %}{% if pd %}{{ pd.data.title }} · {% endif %}{{ p.data.author or "匿名作者" }} · {{ p.date | ymd }}</span>
+    <span class="excerpt">{{ p.content | excerpt }}</span>
+  </li>
+{% else %}
+  <li class="empty">暂无文章</li>
+{% endfor %}
+</ul>

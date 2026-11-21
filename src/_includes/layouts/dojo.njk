@@ -1,0 +1,24 @@
+---
+layout: layouts/base.njk
+---
+{% set mine = collections.posts_zh | postsOf(page.fileSlug) %}
+<article class="dojo">
+  <header class="dojo-head">
+    <h1>{{ title }}</h1>
+    <p class="meta">
+      <span class="badge">已签署共道宪章</span>
+      {% if kind %}<span class="badge muted">{{ kind }}</span>{% endif %}
+      {% if location %}<span class="badge muted">{{ location }}</span>{% endif %}
+      入驻于 {{ joined }}
+    </p>
+    <p class="lead">{{ summary }}</p>
+  </header>
+  <section class="prose">
+    {{ content | safe }}
+  </section>
+  {% if website %}<p><a class="btn" href="{{ website }}" rel="noopener">访问该道场自己的网站 →</a></p>{% endif %}
+  <section>
+    <h2>在本平台发表的文章（{{ mine.length }}）</h2>
+    {% set list = mine %}{% include "partials/post-list.njk" %}
+  </section>
+</article>

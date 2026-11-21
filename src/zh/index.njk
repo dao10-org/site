@@ -1,0 +1,48 @@
+---
+layout: layouts/base.njk
+permalink: /zh/
+---
+<section class="hero">
+  <h1>道的文明，当代人的公共空间</h1>
+  <p>这里不问出自哪部古籍、哪位名人，也不问门派、师承与宗教身份。<br>无论你来自道家、佛法、其他信仰，还是没有任何宗教背景——只要你能用现代的语言讲好道的智慧，并愿意遵守“人权”与“共生”两条底线，这里就有你的位置。</p>
+  <p class="hero-actions">
+    <a class="btn" href="/zh/charter/">阅读《共道宪章》</a>
+    <a class="btn ghost" href="/zh/download/">下载离线合集</a>
+  </p>
+</section>
+
+<div class="columns">
+  <section class="col">
+    <h2>最新</h2>
+    <p class="col-note">按发布时间排列</p>
+    {% set list = collections.posts_zh | head(5) %}{% include "partials/post-list.njk" %}
+    <p><a href="/zh/library/">全部文章 →</a></p>
+  </section>
+
+  <section class="col">
+    <h2>随机发现 <button type="button" class="tool-btn small" id="reshuffle">换一批</button></h2>
+    <p class="col-note">每次打开都不同，任何道场都有同等机会被看见</p>
+    <ul class="post-list" id="random-list"><li class="empty">加载中……</li></ul>
+    <script type="application/json" id="all-posts">[
+      {%- for p in collections.posts_zh -%}
+      {%- set pd = p.data.dojo | dojo(collections.dojos_zh) -%}
+      {"t":{{ p.data.title | dump | safe }},"u":"{{ p.url }}","d":{{ (pd.data.title if pd else "") | dump | safe }},"a":{{ (p.data.author or "匿名作者") | dump | safe }},"x":{{ p.content | excerpt | dump | safe }}}{% if not loop.last %},{% endif %}
+      {%- endfor -%}
+    ]</script>
+  </section>
+
+  <section class="col">
+    <h2>相互推荐</h2>
+    <p class="col-note">由其他道场推荐，自荐不计；每个道场每月推荐票有限</p>
+    {% set list = collections.posts_zh | recommended(5) %}{% include "partials/post-list.njk" %}
+  </section>
+</div>
+
+<section class="dojo-strip">
+  <h2>道场</h2>
+  <div class="cards">
+  {% for d in collections.dojos_zh %}
+    <a class="card" href="{{ d.url }}"><strong>{{ d.data.title }}</strong><span>{{ d.data.summary }}</span></a>
+  {% endfor %}
+  </div>
+</section>

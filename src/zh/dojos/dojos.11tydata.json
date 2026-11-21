@@ -1,0 +1,1 @@
+{ "layout": "layouts/dojo.njk", "permalink": "/zh/dojos/{{ page.fileSlug }}/" }

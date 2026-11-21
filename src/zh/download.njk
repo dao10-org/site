@@ -1,0 +1,30 @@
+---
+layout: layouts/base.njk
+title: 离线下载
+permalink: /zh/download/
+---
+<article class="prose">
+<h1>离线下载</h1>
+<p class="lead">把整个文库带走。合集可以在任何浏览器里打开，不需要联网，不需要安装软件，适合保存和转发。</p>
+
+<h2>当前合集</h2>
+<table class="dl-table" id="dl-table">
+  <thead><tr><th>文件</th><th>大小</th><th>SHA-256 校验码</th></tr></thead>
+  <tbody><tr><td colspan="3">加载中……</td></tr></tbody>
+</table>
+
+<h2>为什么要核对校验码？</h2>
+<p>有人可能会散布伪造或被篡改的“共道文明合集”。下载后，你可以核对文件的 SHA-256 校验码，确认它和本页公布的完全一致。</p>
+<ul>
+  <li>Windows：在文件所在文件夹打开 PowerShell，输入 <code>Get-FileHash 文件名</code></li>
+  <li>macOS / Linux：输入 <code>shasum -a 256 文件名</code></li>
+</ul>
+<p>正式上线后，合集还会附上数字签名，并同时发布在多个镜像站和 Internet Archive，任何一处被封锁都不影响获取。</p>
+
+<h2>计划中的格式</h2>
+<ul>
+  <li>单文件网页合集（已提供）</li>
+  <li>EPUB 电子书、PDF（计划中）</li>
+  <li>原始 Markdown 文本包（计划中，便于二次整理与再发布）</li>
+</ul>
+</article>

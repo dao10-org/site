@@ -1,0 +1,22 @@
+---
+layout: layouts/base.njk
+---
+{% set d = dojo | dojo(collections.dojos_zh) %}
+<article class="prose post">
+  <p class="meta">
+    {% if anonymous %}<span class="badge anon">匿名</span>{% endif %}
+    {% if d %}<a href="{{ d.url }}">{{ d.data.title }}</a> · {% endif %}
+    {{ author or "匿名作者" }} · <time datetime="{{ page.date | ymd }}">{{ page.date | ymd }}</time>
+  </p>
+  <h1>{{ title }}</h1>
+  {{ content | safe }}
+  <footer class="post-foot">
+    {% set others = recommendedBy | others(dojo) %}
+    <p>授权：{{ license }} · 可自由转载、镜像、离线分发（请保留署名与出处）。</p>
+    {% if others.length %}
+    <p>来自其他道场的推荐：
+      {% for r in others %}{% set rd = r | dojo(collections.dojos_zh) %}<a href="{{ rd.url }}">{{ rd.data.title }}</a>{% if not loop.last %}、{% endif %}{% endfor %}
+    </p>
+    {% endif %}
+  </footer>
+</article>

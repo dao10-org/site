@@ -1,0 +1,28 @@
+---
+permalink: /downloads/gongdao-wenku-zh.html
+eleventyExcludeFromCollections: true
+---
+<!doctype html>
+<html lang="zh-Hans"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>共道文明 · 文库离线合集 · {{ build.date }}</title>
+<style>
+body{font:17px/1.8 "Noto Serif SC","Songti SC","SimSun",serif;max-width:46em;margin:2em auto;padding:0 1em;color:#222;background:#faf8f2}
+h1{font-size:1.6em}h2{font-size:1.3em;margin-top:2.5em;border-top:1px solid #ccc;padding-top:1em}
+.meta{color:#777;font-size:.9em}nav a{display:block}
+</style></head><body>
+<h1>共道文明 · 文库离线合集</h1>
+<p class="meta">生成日期：{{ build.date }} · 共 {{ collections.posts_zh.length }} 篇 · 授权：各篇注明（默认 CC BY-SA 4.0），可自由转载与分发。<br>
+核对真伪：请到官方网站“离线下载”页面核对本文件的 SHA-256 校验码。</p>
+<nav><h2>目录</h2>
+{% for p in collections.posts_zh %}<a href="#a{{ loop.index }}">{{ p.data.title }}</a>{% endfor %}
+</nav>
+{% for p in collections.posts_zh %}
+{% set pd = p.data.dojo | dojo(collections.dojos_zh) %}
+<article id="a{{ loop.index }}">
+<h2>{{ p.data.title }}</h2>
+<p class="meta">{% if pd %}{{ pd.data.title }} · {% endif %}{{ p.data.author or "匿名作者" }} · {{ p.date | ymd }} · {{ p.data.license }}</p>
+{{ p.content | safe }}
+</article>
+{% endfor %}
+</body></html>

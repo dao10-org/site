@@ -1,0 +1,65 @@
+{
+  "name": {
+    "zh": "共道文明",
+    "en": "Gongdao Commons"
+  },
+  "tagline": {
+    "zh": "道的文明 · 存、展、通",
+    "en": "A commons for the civilization of the Dao — keep, show, connect"
+  },
+  "prototype": true,
+  "nav": {
+    "zh": [
+      {
+        "url": "/zh/",
+        "label": "首页"
+      },
+      {
+        "url": "/zh/library/",
+        "label": "文库"
+      },
+      {
+        "url": "/zh/dojos/",
+        "label": "道场"
+      },
+      {
+        "url": "/zh/charter/",
+        "label": "共道宪章"
+      },
+      {
+        "url": "/zh/download/",
+        "label": "离线下载"
+      },
+      {
+        "url": "/zh/submit/",
+        "label": "投稿"
+      },
+      {
+        "url": "/zh/search/",
+        "label": "搜索"
+      }
+    ],
+    "en": [
+      {
+        "url": "/en/",
+        "label": "Home"
+      },
+      {
+        "url": "/en/charter/",
+        "label": "Charter"
+      },
+      {
+        "url": "/en/about/",
+        "label": "About"
+      },
+      {
+        "url": "/zh/library/",
+        "label": "Library (Chinese)"
+      }
+    ]
+  },
+  "url": "https://dao10.org",
+  "mirrors": [
+    "https://dao01.org"
+  ]
+}

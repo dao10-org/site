@@ -1,0 +1,8 @@
+---
+layout: layouts/base.njk
+title: 文库
+permalink: /zh/library/
+---
+<h1>文库</h1>
+<p class="lead">平台上所有公开发表的文章，按时间排列。全部内容可自由转载与离线分发。</p>
+{% set list = collections.posts_zh %}{% include "partials/post-list.njk" %}

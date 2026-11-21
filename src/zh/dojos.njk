@@ -1,0 +1,25 @@
+---
+layout: layouts/base.njk
+title: 道场
+permalink: /zh/dojos/
+---
+<h1>道场</h1>
+<p class="lead">“道场”可以是一个团体、一个学会，也可以是一个人。不问门派与师承，签署《共道宪章》即可入驻，所有道场使用同样的页面、享有同样的曝光规则。按入驻时间排列。</p>
+<div class="cards">
+{% for d in collections.dojos_zh %}
+  <a class="card" href="{{ d.url }}">
+    <strong>{{ d.data.title }}</strong>
+    <span>{{ d.data.summary }}</span>
+    <small>{{ d.data.kind }} · {{ d.data.location }} · 入驻于 {{ d.data.joined }} · 文章 {{ (collections.posts_zh | postsOf(d.fileSlug)).length }} 篇</small>
+  </a>
+{% endfor %}
+</div>
+<div class="notice">
+  <h2>如何入驻</h2>
+  <ol>
+    <li>阅读并签署《共道宪章》（人权、共生两条底线）。</li>
+    <li>提交道场简介：你是谁、你讲的道是什么、怎样联系你。</li>
+    <li>可以在本平台发表文章，也可以只放一个链接，指向你自己的网站。</li>
+  </ol>
+  <p>（原型阶段：入驻申请流程尚未开放。）</p>
+</div>

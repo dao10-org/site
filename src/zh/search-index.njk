@@ -1,0 +1,13 @@
+---
+permalink: /zh/search-index.json
+eleventyExcludeFromCollections: true
+---
+[
+{%- for p in collections.posts_zh -%}
+{%- set pd = p.data.dojo | dojo(collections.dojos_zh) -%}
+{"t":{{ p.data.title | dump | safe }},"u":"{{ p.url }}","d":{{ (pd.data.title if pd else "") | dump | safe }},"a":{{ (p.data.author or "匿名作者") | dump | safe }},"b":{{ p.content | plain | dump | safe }}},
+{%- endfor -%}
+{%- for d in collections.dojos_zh -%}
+{"t":{{ d.data.title | dump | safe }},"u":"{{ d.url }}","d":"道场","a":"","b":{{ (d.data.summary + " " + (d.content | plain)) | dump | safe }}}{% if not loop.last %},{% endif %}
+{%- endfor -%}
+]

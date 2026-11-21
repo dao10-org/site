@@ -1,0 +1,8 @@
+---
+layout: layouts/base.njk
+---
+<article class="prose">
+  <h1>{{ title }}</h1>
+  {% if status %}<p class="status">{{ status }}</p>{% endif %}
+  {{ content | safe }}
+</article>

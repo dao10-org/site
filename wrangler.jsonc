@@ -1,0 +1,9 @@
+// Cloudflare 部署配置：把 Eleventy 生成的 _site 目录作为静态网站发布
+{
+  "name": "dao10-site",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./_site",
+    "not_found_handling": "404-page"
+  }
+}

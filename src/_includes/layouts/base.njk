@@ -6,6 +6,7 @@
   <title>{% if title %}{{ title }} · {% endif %}{{ site.name[lang] }}</title>
   <meta name="description" content="{{ description or site.tagline[lang] }}">
   {% if site.prototype %}<meta name="robots" content="noindex, nofollow">{% endif %}
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
   <link rel="stylesheet" href="/assets/css/style.css">
   {# 不加载任何第三方字体、统计或脚本：大陆可访问，也不泄露读者信息 #}
 </head>

@@ -145,4 +145,32 @@
       })
       .catch(() => (dl.tBodies[0].innerHTML = '<tr><td colspan="3">清单暂不可用</td></tr>'));
   }
+
+  // ---------- 公开账目：按编号/交易尾号查找、按基金筛选（全部在本机浏览器里完成） ----------
+  const lt = document.getElementById("ledger-table");
+  if (lt) {
+    const lq = document.getElementById("ledger-q");
+    const lf = document.getElementById("ledger-fund");
+    const none = document.getElementById("ledger-none");
+    const rows = Array.from(lt.tBodies[0].rows);
+    const apply = () => {
+      const term = lq.value.trim().toLowerCase().replace(/^…/, "");
+      const fund = lf.value;
+      let shown = 0;
+      rows.forEach((r) => {
+        const ok = (!fund || r.dataset.fund.split(" ").includes(fund)) &&
+          (!term || r.dataset.key.toLowerCase().includes(term));
+        r.hidden = !ok;
+        if (ok) shown++;
+      });
+      none.hidden = shown > 0;
+    };
+    lq.addEventListener("input", apply);
+    lf.addEventListener("change", apply);
+    document.querySelectorAll("[data-fund-link]").forEach((a) =>
+      a.addEventListener("click", () => { lf.value = a.dataset.fundLink; lq.value = ""; apply(); })
+    );
+    const h = new URLSearchParams(location.search).get("id");
+    if (h) { lq.value = h; apply(); }
+  }
 })();

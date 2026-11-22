@@ -1,0 +1,128 @@
+{
+  "_说明": "共道文明 · 公开账目原始数据。只追加、不删除：记错了不要改原条目，而是给它加 void（作废理由）再追加一条正确的。金额统一折算成美元（amount），原币金额写在 original。带 example: true 的是演示数据，正式上线前删除。",
+  "currency": "USD",
+  "updated": "2026-11-22",
+  "projects": [
+    {
+      "slug": "general",
+      "name": "通用基金（行政总费用）",
+      "type": "general",
+      "status": "长期",
+      "summary": "维持平台日常运转的费用：域名、托管、AI 审核接口、邮箱、组织注册与年审、法律咨询、支付手续费等。未指定用途的收入都进入这里。"
+    },
+    {
+      "slug": "p2027-en-translation",
+      "name": "专项示例：首批文章英文翻译",
+      "type": "project",
+      "status": "进行中",
+      "target": 300,
+      "adminFee": "零行政费（0%）",
+      "start": "2026-12-01",
+      "end": "2027-03-31",
+      "summary": "把文库中被推荐最多的 10 篇文章译成英文，供跨宗教交流使用。结项时如有结余，全部调入通用基金并公开记录。",
+      "example": true
+    }
+  ],
+  "entries": [
+    {
+      "id": "GD-2026-0001",
+      "date": "2026-11-21",
+      "kind": "收入",
+      "fund": "general",
+      "category": "发起团队承担",
+      "amount": 20.88,
+      "original": "20.88 USD",
+      "party": "发起团队",
+      "note": "发起团队直接支付两个域名的首年注册费（见下两条）",
+      "example": true
+    },
+    {
+      "id": "GD-2026-0002",
+      "date": "2026-11-21",
+      "kind": "支出",
+      "fund": "general",
+      "category": "域名",
+      "amount": 10.44,
+      "original": "10.44 USD",
+      "party": "Cloudflare Registrar",
+      "note": "dao10.org 首年注册（金额待按发票核对）",
+      "proof": "",
+      "example": true
+    },
+    {
+      "id": "GD-2026-0003",
+      "date": "2026-11-21",
+      "kind": "支出",
+      "fund": "general",
+      "category": "域名",
+      "amount": 10.44,
+      "original": "10.44 USD",
+      "party": "Cloudflare Registrar",
+      "note": "dao01.org 首年注册（金额待按发票核对）",
+      "proof": "",
+      "example": true
+    },
+    {
+      "id": "GD-2026-0004",
+      "date": "2026-11-22",
+      "kind": "支出",
+      "fund": "general",
+      "category": "域名",
+      "amount": 10.44,
+      "original": "10.44 USD",
+      "party": "Cloudflare Registrar",
+      "note": "dao10.org 首年注册",
+      "void": { "date": "2026-11-22", "reason": "与 GD-2026-0002 重复登记。原记录保留，不计入合计。" },
+      "example": true
+    },
+    {
+      "id": "GD-2026-0005",
+      "date": "2026-12-03",
+      "kind": "收入",
+      "fund": "p2027-en-translation",
+      "category": "捐赠（指定专项）",
+      "amount": 50,
+      "original": "46.00 EUR",
+      "party": "匿名",
+      "ref": "…7f3a",
+      "note": "指定用于英文翻译专项",
+      "example": true
+    },
+    {
+      "id": "GD-2026-0006",
+      "date": "2026-12-05",
+      "kind": "收入",
+      "fund": "general",
+      "category": "捐赠（未指定用途）",
+      "amount": 20,
+      "original": "20 USDT",
+      "party": "匿名",
+      "ref": "…c91e",
+      "note": "未指定用途，进入通用基金",
+      "example": true
+    },
+    {
+      "id": "GD-2026-0007",
+      "date": "2026-12-20",
+      "kind": "支出",
+      "fund": "p2027-en-translation",
+      "category": "翻译费",
+      "amount": 30,
+      "original": "30 USD",
+      "party": "译者（本人同意后公开署名）",
+      "note": "第 1–2 篇译稿",
+      "proof": "",
+      "example": true
+    }
+  ],
+  "reconciliations": [
+    {
+      "date": "2026-11-30",
+      "scope": "全部基金",
+      "book": 0,
+      "actual": 0,
+      "note": "收款渠道尚未开通，开支由发起团队直接支付，账面与实际均为 0。",
+      "example": true
+    }
+  ]
+}

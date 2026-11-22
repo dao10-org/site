@@ -1,0 +1,114 @@
+---
+layout: layouts/base.njk
+title: 公开账目
+permalink: /zh/ledger/
+---
+{% set L = ledger %}
+<article class="ledger">
+  <h1>公开账目</h1>
+  <p class="status">账目更新至 {{ L.updated }} · 金额单位：美元（USD）</p>
+  <p class="lead">平台的每一笔收入和支出都在这里，按〔<a href="/zh/finance/">经费与账目公开制度</a>〕记录。已公开的记录永远不删除；记错的条目划线保留，并写明作废理由。</p>
+
+  {% if L.hasExamples %}
+  <div class="notice"><p>带 <span class="badge example">示例</span> 标记的是演示数据，用来展示账目的样子，正式上线前会删除。域名的实际金额待按发票核对。</p></div>
+  {% endif %}
+
+  <h2>总览</h2>
+  <div class="stats">
+    <div class="stat"><small>累计收入</small><strong>${{ L.totals.income }}</strong></div>
+    <div class="stat"><small>行政总费用</small><strong>${{ L.totals.adminExpense }}</strong></div>
+    <div class="stat"><small>专项费用</small><strong>${{ L.totals.projectExpense }}</strong></div>
+    <div class="stat"><small>当前结余</small><strong>${{ L.totals.balance }}</strong></div>
+  </div>
+  <p class="meta">共 {{ L.totals.count }} 条记录，其中作废 {{ L.totals.voided }} 条（不计入合计）。</p>
+
+  <h2 id="general">一、通用基金（行政总费用）</h2>
+  {% set g = L.general %}
+  <p>{{ g.summary }}</p>
+  <div class="stats">
+    <div class="stat"><small>收入</small><strong>${{ g.incomeText }}</strong></div>
+    <div class="stat"><small>支出</small><strong>${{ g.expenseText }}</strong></div>
+    <div class="stat"><small>结余</small><strong>${{ g.balanceText }}</strong></div>
+  </div>
+  {% if g.categories.length %}
+  <table class="dl-table compact">
+    <thead><tr><th>支出类别</th><th class="num">金额</th></tr></thead>
+    <tbody>{% for c in g.categories %}<tr><td>{{ c.name }}</td><td class="num">${{ c.amountText }}</td></tr>{% endfor %}</tbody>
+  </table>
+  {% endif %}
+
+  <h2 id="projects">二、专项</h2>
+  {% if L.specials.length %}
+  <div class="cards">
+    {% for p in L.specials %}
+    <div class="card project" id="{{ p.slug }}">
+      <strong>{{ p.name }}{% if p.example %} <span class="badge example">示例</span>{% endif %}</strong>
+      <span><span class="badge">{{ p.status }}</span> {{ p.start }} 至 {{ p.end }}</span>
+      <span>{{ p.summary }}</span>
+      {% if p.target %}
+      <div class="bar" title="{{ p.percent }}%"><i style="width: {{ p.percent }}%"></i></div>
+      <span>已到位 <b>${{ p.raisedText }}</b> / 目标 ${{ p.target }}（{{ p.percent }}%）</span>
+      {% endif %}
+      <span>已支出 ${{ p.expenseText }} · 结余 <b>${{ p.balanceText }}</b></span>
+      <small>行政费声明：{{ p.adminFee }}</small>
+      <small><a href="#all" data-fund-link="{{ p.slug }}">只看这个专项的账目 ↓</a></small>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="empty">目前没有专项。</p>
+  {% endif %}
+
+  <h2 id="all">三、全部记录</h2>
+  <div class="ledger-tools">
+    <input id="ledger-q" class="search-box" type="search" placeholder="输入编号或交易尾号查找，例如 GD-2026-0001" autocomplete="off">
+    <select id="ledger-fund" class="tool-btn">
+      <option value="">全部基金与专项</option>
+      {% for p in L.projects %}<option value="{{ p.slug }}">{{ p.name }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="table-scroll">
+  <table class="dl-table ledger-table" id="ledger-table">
+    <thead><tr><th>编号</th><th>日期</th><th>基金 / 专项</th><th>类别 · 说明</th><th>对方</th><th class="num">收入</th><th class="num">支出</th><th class="num">本基金结余</th></tr></thead>
+    <tbody>
+      {% for e in L.entries %}
+      <tr class="{{ 'void' if e.void }}" data-fund="{{ e.fund }}{% if e.to %} {{ e.to }}{% endif %}" data-key="{{ e.id }} {{ e.ref or '' }}">
+        <td><code>{{ e.id }}</code>{% if e.example %}<br><span class="badge example">示例</span>{% endif %}</td>
+        <td>{{ e.date }}</td>
+        <td>{{ e.fundName }}{% if e.toName %} → {{ e.toName }}{% endif %}</td>
+        <td><b>{{ e.category }}</b>{% if e.note %}<br>{{ e.note }}{% endif %}
+          {% if e.original %}<br><small class="meta">原币：{{ e.original }}{% if e.ref %} · 交易尾号 {{ e.ref }}{% endif %}</small>{% endif %}
+          {% if e.proof %}<br><a href="{{ e.proof }}">查看凭证</a>{% endif %}
+          {% if e.void %}<br><span class="void-note">已作废（{{ e.void.date }}）：{{ e.void.reason }}</span>{% endif %}
+        </td>
+        <td>{{ e.party }}</td>
+        <td class="num amt">{% if e.kind == "收入" %}{{ e.amountText }}{% endif %}</td>
+        <td class="num amt">{% if e.kind == "支出" %}{{ e.amountText }}{% elif e.kind == "调拨" %}调拨 {{ e.amountText }}{% endif %}</td>
+        <td class="num">{{ e.fundBalanceText }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <p class="meta" id="ledger-none" hidden>没有找到符合条件的记录。</p>
+
+  <h2 id="reconcile">四、对账记录</h2>
+  <p>每月把账面结余和实际账户余额核对一次，有差额必须写明原因。</p>
+  <table class="dl-table compact">
+    <thead><tr><th>日期</th><th>范围</th><th class="num">账面结余</th><th class="num">实际余额</th><th class="num">差额</th><th>说明</th></tr></thead>
+    <tbody>
+      {% for r in L.reconciliations %}
+      <tr><td>{{ r.date }}{% if r.example %} <span class="badge example">示例</span>{% endif %}</td><td>{{ r.scope }}</td><td class="num">{{ r.book }}</td><td class="num">{{ r.actual }}</td><td class="num">{{ r.actual - r.book }}</td><td>{{ r.note }}</td></tr>
+      {% else %}
+      <tr><td colspan="6" class="empty">尚无对账记录</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2 id="download">五、下载与核对</h2>
+  <ul>
+    <li><a href="/downloads/gongdao-ledger.csv" download>gongdao-ledger.csv</a>：全部记录，可用 Excel 或 WPS 打开；</li>
+    <li><a href="/downloads/gongdao-ledger.json" download>gongdao-ledger.json</a>：原始数据。</li>
+  </ul>
+  <p>两个文件的 SHA-256 校验码见〔<a href="/zh/download/">离线下载</a>〕。账目的每一次修改历史，可在 <a href="https://github.com/dao10-org/site/commits/main/src/_data/finance.json">GitHub</a> 上查看。</p>
+</article>

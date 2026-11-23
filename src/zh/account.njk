@@ -1,0 +1,98 @@
+---
+layout: layouts/base.njk
+title: 账号
+permalink: /zh/account/
+---
+<div class="account prose">
+  <h1>账号</h1>
+  <p class="lead">阅读、下载、分享都<strong>不需要</strong>账号。账号只用于以后的投稿、评论，以及道场管理自己的二级网站。主站和所有道场共用这一个账号，登录一次即可。</p>
+
+  <div id="acc-offline" class="notice" hidden>
+    <p>账号功能只在主站 <a href="https://dao10.org/zh/account/">dao10.org</a> 上可用。镜像站和离线合集只供阅读。</p>
+  </div>
+
+  <div id="acc-loading" class="meta">正在检查登录状态……</div>
+
+  {# ---------- 未登录 ---------- #}
+  <section id="acc-guest" hidden>
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab" data-tab="login" aria-selected="true">登录</button>
+      <button type="button" class="tab" data-tab="register" aria-selected="false">注册</button>
+      <button type="button" class="tab" data-tab="recover" aria-selected="false">忘记密码</button>
+    </div>
+
+    <form class="acc-form" data-form="login">
+      <label>用户名 <input name="username" autocomplete="username" required></label>
+      <label>密码 <input name="password" type="password" autocomplete="current-password" required></label>
+      <button class="btn" type="submit">登录</button>
+    </form>
+
+    <form class="acc-form" data-form="register" hidden>
+      <label>用户名 <small>3–24 位英文字母、数字或下划线，只用于登录，不公开</small>
+        <input name="username" autocomplete="username" pattern="[a-zA-Z0-9_]{3,24}" required></label>
+      <label>显示名 <small>发表文章、评论时显示的署名，中英文都可以，以后可以改</small>
+        <input name="displayName" maxlength="30" required></label>
+      <label>密码 <small>至少 8 位</small>
+        <input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
+      <label>再输一次密码 <input name="password2" type="password" autocomplete="new-password" minlength="8" required></label>
+      <p class="meta">我们<strong>不收集</strong>邮箱、手机号，也不记录你的 IP 地址。注册后会给你一个<strong>恢复码</strong>，忘记密码时只能靠它找回，请务必保存。</p>
+      <button class="btn" type="submit">注册</button>
+    </form>
+
+    <form class="acc-form" data-form="recover" hidden>
+      <p class="meta">用注册时保存的恢复码设置新密码。恢复码用过一次就作废，会换发一个新的。</p>
+      <label>用户名 <input name="username" autocomplete="username" required></label>
+      <label>恢复码 <input name="recoveryCode" autocomplete="off" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" required></label>
+      <label>新密码 <input name="newPassword" type="password" autocomplete="new-password" minlength="8" required></label>
+      <button class="btn" type="submit">设置新密码</button>
+    </form>
+  </section>
+
+  {# ---------- 新恢复码（只显示一次） ---------- #}
+  <section id="acc-code" class="notice" hidden>
+    <h2>请保存你的恢复码</h2>
+    <p>这是找回账号的<strong>唯一</strong>办法，只显示这一次。平台没有你的邮箱和手机号，无法用其他方式帮你找回。</p>
+    <p class="recovery-code" id="acc-code-value"></p>
+    <p><button type="button" class="tool-btn" id="acc-code-copy">复制</button> 可以抄在纸上，或存进密码管理器。不要截图发到聊天软件里。</p>
+    <label class="check"><input type="checkbox" id="acc-code-ok"> 我已经保存好了</label>
+    <p><button type="button" class="btn" id="acc-code-done" disabled>继续</button></p>
+  </section>
+
+  {# ---------- 已登录 ---------- #}
+  <section id="acc-user" hidden>
+    <p>你好，<strong id="acc-name"></strong>（用户名 <code id="acc-username"></code>，注册于 <span id="acc-since"></span>）</p>
+    <div id="acc-dojos" hidden>
+      <h2>我管理的道场</h2>
+      <ul id="acc-dojo-list"></ul>
+      <p class="meta">在线编辑道场二级网站的功能正在开发中。</p>
+    </div>
+
+    <h2>修改显示名</h2>
+    <form class="acc-form" data-form="profile">
+      <label>显示名 <input name="displayName" maxlength="30" required></label>
+      <button class="btn" type="submit">保存</button>
+    </form>
+
+    <h2>修改密码</h2>
+    <form class="acc-form" data-form="password">
+      <label>原密码 <input name="oldPassword" type="password" autocomplete="current-password" required></label>
+      <label>新密码 <input name="newPassword" type="password" autocomplete="new-password" minlength="8" required></label>
+      <p class="meta">修改后，其他设备上的登录会全部退出。</p>
+      <button class="btn" type="submit">修改密码</button>
+    </form>
+
+    <p><button type="button" class="btn ghost" id="acc-logout">退出登录</button></p>
+
+    <details class="danger">
+      <summary>注销账号</summary>
+      <p>账号、登录记录和道场管理权限会<strong>立即永久删除</strong>，无法恢复。已经公开发表的文章不受影响（文章署的是显示名，不和账号关联）。</p>
+      <form class="acc-form" data-form="delete">
+        <label>输入密码确认 <input name="password" type="password" autocomplete="current-password" required></label>
+        <button class="btn danger-btn" type="submit">永久注销</button>
+      </form>
+    </details>
+  </section>
+
+  <p id="acc-msg" class="acc-msg" role="status" aria-live="polite"></p>
+</div>
+<script src="/assets/js/account.js" defer></script>

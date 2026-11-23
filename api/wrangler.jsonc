@@ -1,0 +1,23 @@
+// 共道文明 · 账号后台（Cloudflare Worker + D1）
+// 只处理 dao10.org/api/*，网站其余部分仍是 Cloudflare Pages 上的静态网页。
+// 必须部署在 gongshengwenming 的 Cloudflare 账号（dao10.org 所在账号），不是 AU139 的账号。
+{
+  "name": "dao10-api",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": false,
+  "routes": [{ "pattern": "dao10.org/api/*", "zone_name": "dao10.org" }],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "dao10-db",
+      "database_id": "待创建后填写",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // 限频：只在 Cloudflare 内存里按 IP 计数，不写入数据库
+  "ratelimits": [
+    { "name": "AUTH_LIMIT", "namespace_id": "1001", "simple": { "limit": 10, "period": 60 } }
+  ],
+  "observability": { "enabled": false } // 不保存请求日志（日志里会有 IP）
+}

@@ -202,4 +202,21 @@
       nb.addEventListener("click", () => navigator.share({ title, url }).catch(() => {}));
     }
   });
+
+  // ---------- 页头：显示登录状态（只在主站查询；镜像站、离线合集不发请求） ----------
+  const accLink = document.getElementById("acc-link");
+  if (accLink) {
+    const setUser = (u) => {
+      accLink.hidden = false; // 账号服务可用时才显示入口
+      accLink.textContent = u ? u.displayName : "登录";
+      accLink.title = u ? "我的账号" : "登录 / 注册";
+    };
+    document.addEventListener("gd-user", (e) => setUser(e.detail));
+    if (location.hostname === "dao10.org") {
+      fetch("/api/me", { credentials: "same-origin" })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => d && setUser(d.user))
+        .catch(() => {});
+    }
+  }
 })();

@@ -19,5 +19,10 @@
   "ratelimits": [
     { "name": "AUTH_LIMIT", "namespace_id": "1001", "simple": { "limit": 10, "period": 60 } }
   ],
+  // Cloudflare 自带 AI（用于按两条底线审核投稿；稿件不发给第三方）
+  "ai": { "binding": "AI" },
+  // 每 30 分钟检查一次，发布到期的匿名稿件
+  "triggers": { "crons": ["*/30 * * * *"] },
+  // GITHUB_TOKEN（发布到 GitHub 仓库用）是机密，在 Cloudflare 后台设置，不写在这里
   "observability": { "enabled": false } // 不保存请求日志（日志里会有 IP）
 }

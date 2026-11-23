@@ -48,7 +48,61 @@
     });
     $("acc-dojos").hidden = !u.dojos.length;
     show("acc-user");
+    loadSubs();
     announce(u);
+  }
+
+  // 我的投稿（署名文章）
+  const STATUS = { published: "已发表", scheduled: "待发布", withdrawn: "已撤回" };
+  async function loadSubs() {
+    const ul = $("acc-subs");
+    try {
+      const { items } = await api("my-submissions");
+      ul.textContent = "";
+      if (!items.length) {
+        const li = document.createElement("li");
+        li.className = "empty";
+        li.textContent = "还没有投稿";
+        ul.appendChild(li);
+      }
+      items.forEach((it) => {
+        const li = document.createElement("li");
+        const a = document.createElement(it.status === "withdrawn" ? "span" : "a");
+        a.className = "post-title";
+        a.textContent = it.title;
+        if (it.status !== "withdrawn") a.href = it.url;
+        const meta = document.createElement("span");
+        meta.className = "meta";
+        meta.textContent = STATUS[it.status] + " · " + new Date(it.publish_at * 1000).toISOString().slice(0, 10) + " ";
+        li.append(a, meta);
+        if (it.status !== "withdrawn") {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "tool-btn small";
+          b.textContent = "撤回";
+          b.addEventListener("click", async () => {
+            if (b.dataset.sure !== "1") {
+              b.dataset.sure = "1";
+              b.textContent = "确定撤回？再点一次";
+              return;
+            }
+            b.disabled = true;
+            try {
+              await api("withdraw", { id: it.id });
+              say("已撤回《" + it.title + "》，网站更新后（约 1–2 分钟）文章即消失");
+              loadSubs();
+            } catch (err) {
+              say(err.message, true);
+              b.disabled = false;
+            }
+          });
+          meta.appendChild(b);
+        }
+        ul.appendChild(li);
+      });
+    } catch (e) {
+      ul.textContent = "";
+    }
   }
 
   function showCode(code, user) {

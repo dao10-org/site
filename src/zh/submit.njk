@@ -1,0 +1,67 @@
+---
+layout: layouts/base.njk
+title: 投稿
+permalink: /zh/submit/
+description: 任何人都可以投稿。只要不违反“人权”“共生”两条底线，经 AI 审核后即可发表，可以署名，也可以匿名。
+---
+<div class="submit prose">
+  <h1>投稿</h1>
+  <p class="lead">任何人都可以投稿：道场的管理员和成员可以投到自己的道场，其他人以个人名义投稿。只要不违反<strong>人权</strong>与<strong>共生</strong>两条底线，经 AI 审核后即可发表。平台不评判观点。</p>
+
+  <details class="howto">
+    <summary>投稿须知（请先阅读）</summary>
+    <ol>
+      <li><strong>审核</strong>：由 AI 按公开规则自动审核，只检查是否违反两条底线和明显违法内容（详见 <a href="/zh/transparency/">AI 审核透明度</a>）。通过即发表，没有人工预审。</li>
+      <li><strong>平台声明</strong>：发表只表示未发现违反两条底线，不代表平台认同其观点；文章内容由作者负责，平台不承担其他任何责任。</li>
+      <li><strong>版权</strong>：请只投你自己写的，或已获得作者授权的文章。如涉及侵犯版权等问题，相关方可联系 <a href="mailto:report@dao10.org">report@dao10.org</a>，经 AI 判定后，必要时下架或删除。</li>
+      <li><strong>授权</strong>：版权归作者。发表时选择一种开放授权（默认 CC BY-SA 4.0），允许他人转载、镜像、离线分发。</li>
+      <li><strong>署名发表</strong>：显示你的显示名，发表后立即出现在网站上（约 1–2 分钟）。可以在“<a href="/zh/account/">账号</a>”页的“我的投稿”里撤回。</li>
+      <li><strong>匿名发表</strong>：署名为“匿名作者”。平台不保存“谁发了哪篇”，文章在 24 小时内的随机时间发布，让发布时间对不上投稿时间。撤回只能凭投稿后显示的<strong>管理密钥</strong>。</li>
+      <li><strong>额度</strong>：每个账号每天最多 5 篇。</li>
+    </ol>
+  </details>
+
+  <div id="sub-offline" class="notice" hidden><p>投稿只能在主站 <a href="https://dao10.org/zh/submit/">dao10.org</a> 上进行。</p></div>
+  <div id="sub-guest" class="notice" hidden><p>投稿需要先<a href="/zh/account/">登录或注册</a>。注册只要用户名和密码，不需要邮箱和手机号。</p></div>
+
+  <form id="sub-form" class="acc-form wide" hidden>
+    <label>投到
+      <select name="dojo" id="sub-dojo"><option value="">个人投稿（不属于任何道场）</option></select>
+    </label>
+    <fieldset class="radios">
+      <legend>署名</legend>
+      <label class="check"><input type="radio" name="sign" value="name" checked> 署我的显示名：<b id="sub-name"></b></label>
+      <label class="check"><input type="radio" name="sign" value="anon"> 匿名发表</label>
+    </fieldset>
+    <label>标题 <input name="title" maxlength="80" required></label>
+    <label>正文 <small>分段请空一行。可以用 Markdown：<code>## 小标题</code>、<code>**加粗**</code>、<code>&gt; 引用</code>、<code>- 列表</code>、<code>[文字](网址)</code>。</small>
+      <textarea name="body" rows="18" required></textarea>
+    </label>
+    <label>授权
+      <select name="license">
+        <option value="CC BY-SA 4.0">CC BY-SA 4.0：可转载、修改，须署名，修改后也须开放（默认）</option>
+        <option value="CC BY 4.0">CC BY 4.0：可转载、修改，须署名</option>
+        <option value="CC0 1.0">CC0：放弃所有权利，任何人可自由使用</option>
+      </select>
+    </label>
+    <label class="check"><input type="checkbox" name="agree" required> 我已阅读投稿须知，这是我自己的作品或已获作者授权</label>
+    <p id="sub-anon-tip" class="meta" hidden>匿名提示：匿名只隐藏你在平台上的身份。文章内容和写作风格本身也可能透露你是谁；如果你所在的地方有风险，请不要用单位或学校的网络投稿。</p>
+    <button class="btn" type="submit">提交审核</button>
+  </form>
+
+  <div id="sub-result" hidden></div>
+
+  <details class="howto">
+    <summary>撤回匿名文章</summary>
+    <form id="anon-withdraw" class="acc-form">
+      <label>管理密钥 <input name="key" autocomplete="off" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" required></label>
+      <button class="btn ghost" type="submit">撤回</button>
+    </form>
+  </details>
+
+  <p id="sub-msg" class="acc-msg" role="status" aria-live="polite"></p>
+</div>
+<script type="application/json" id="dojo-names">{
+  {%- for d in collections.dojos_zh -%}{{ d.fileSlug | dump | safe }}:{{ d.data.title | dump | safe }}{% if not loop.last %},{% endif %}{%- endfor -%}
+}</script>
+<script src="/assets/js/submit.js" defer></script>

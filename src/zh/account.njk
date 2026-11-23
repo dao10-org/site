@@ -5,7 +5,7 @@ permalink: /zh/account/
 ---
 <div class="account prose">
   <h1>账号</h1>
-  <p class="lead">阅读、下载、分享都<strong>不需要</strong>账号。账号只用于以后的投稿、评论，以及道场管理自己的二级网站。主站和所有道场共用这一个账号，登录一次即可。</p>
+  <p class="lead">阅读、下载、分享都<strong>不需要</strong>账号。账号用于<a href="/zh/submit/">投稿</a>（署名或匿名）、撤回自己的文章，以后还用于评论和道场管理自己的二级网站。主站和所有道场共用这一个账号，登录一次即可。</p>
 
   <div id="acc-offline" class="notice" hidden>
     <p>账号功能只在主站 <a href="https://dao10.org/zh/account/">dao10.org</a> 上可用。镜像站和离线合集只供阅读。</p>
@@ -67,7 +67,12 @@ permalink: /zh/account/
       <p class="meta">在线编辑道场二级网站的功能正在开发中。</p>
     </div>
 
+    <h2>我的投稿</h2>
+    <p class="meta"><a class="btn" href="/zh/submit/">去投稿</a> 这里只列出署名文章；匿名文章和账号没有关联，不会出现在这里，撤回请到投稿页用管理密钥。</p>
+    <ul id="acc-subs" class="post-list"><li class="empty">加载中……</li></ul>
+
     <h2>修改显示名</h2>
+    <p class="meta">显示名是你发表署名文章时的署名。修改后只影响以后的文章。</p>
     <form class="acc-form" data-form="profile">
       <label>显示名 <input name="displayName" maxlength="30" required></label>
       <button class="btn" type="submit">保存</button>

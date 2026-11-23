@@ -7,6 +7,8 @@
 // - 注册时间只记到日期
 // - 用户可以随时自行注销，账号数据立即删除
 
+import { submit, mySubmissions, withdraw, withdrawAnon, publishDue, stats } from "./submit.js";
+
 const COOKIE = "gd_s";
 const SESSION_DAYS = 30;
 const PBKDF2_ITER = 100000; // Workers 允许的上限
@@ -21,6 +23,10 @@ export default {
       return json({ error: "服务器出错，请稍后再试" }, 500);
     }
   },
+  // 定时任务（每 30 分钟）：发布到期的匿名稿件
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(publishDue(env));
+  },
 };
 
 // ---------------- 路由 ----------------
@@ -30,6 +36,8 @@ async function route(request, env) {
   const method = request.method;
 
   if (method === "GET" && path === "/api/me") return me(request, env);
+  if (method === "GET" && path === "/api/my-submissions") return mySubmissions(request, env);
+  if (method === "GET" && path === "/api/moderation-stats") return stats(env);
   if (method !== "POST") throw new HttpError(404, "没有这个接口");
 
   checkOrigin(request, env);
@@ -53,6 +61,14 @@ async function route(request, env) {
       return updateProfile(request, body, env);
     case "/api/delete-account":
       return deleteAccount(request, body, env);
+    case "/api/submit":
+      await limit(request, env, "submit");
+      return submit(request, body, env);
+    case "/api/withdraw":
+      return withdraw(request, body, env);
+    case "/api/withdraw-anon":
+      await limit(request, env, "withdraw");
+      return withdrawAnon(body, env);
     default:
       throw new HttpError(404, "没有这个接口");
   }
@@ -149,6 +165,7 @@ async function deleteAccount(request, body, env) {
   await env.DB.batch([
     env.DB.prepare("DELETE FROM sessions WHERE user_id = ?").bind(user.id),
     env.DB.prepare("DELETE FROM dojo_admins WHERE user_id = ?").bind(user.id),
+    env.DB.prepare("UPDATE submissions SET user_id = NULL WHERE user_id = ?").bind(user.id), // 已发表文章保留
     env.DB.prepare("DELETE FROM users WHERE id = ?").bind(user.id),
   ]);
   return json({ ok: true }, 200, clearCookie());
@@ -189,21 +206,22 @@ async function currentUser(request, env) {
     .first();
 }
 
-async function requireUser(request, env) {
+export async function requireUser(request, env) {
   const user = await currentUser(request, env);
   if (!user) throw new HttpError(401, "请先登录");
   return user;
 }
 
 async function publicUser(u, env) {
-  const { results } = await env.DB.prepare("SELECT dojo_slug FROM dojo_admins WHERE user_id = ? ORDER BY dojo_slug")
+  const { results } = await env.DB.prepare("SELECT dojo_slug, role FROM dojo_admins WHERE user_id = ? ORDER BY dojo_slug")
     .bind(u.id)
     .all();
   return {
     username: u.username,
     displayName: u.display_name,
     role: u.role,
-    dojos: results.map((r) => r.dojo_slug), // 可以管理的道场
+    dojos: results.filter((r) => r.role !== "member").map((r) => r.dojo_slug), // 管理的道场
+    memberOf: results.map((r) => r.dojo_slug), // 可以投稿的道场（管理员 + 成员）
     since: u.created_at,
   };
 }
@@ -272,7 +290,7 @@ async function verifyPassword(password, stored) {
   return safeEqual(await hashPassword(password, salt), stored);
 }
 
-async function sha256(s) {
+export async function sha256(s) {
   return b64(await crypto.subtle.digest("SHA-256", enc.encode(String(s))));
 }
 
@@ -284,7 +302,7 @@ function safeEqual(a, b) {
   return diff === 0;
 }
 
-function randomId(bytes) {
+export function randomId(bytes) {
   return b64(crypto.getRandomValues(new Uint8Array(bytes))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
@@ -297,17 +315,17 @@ function newRecoveryCode() {
 }
 const normRecovery = (s) => String(s || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
 
-const today = () => new Date().toISOString().slice(0, 10);
+export const today = () => new Date().toISOString().slice(0, 10);
 
 // ---------------- 响应 ----------------
-class HttpError extends Error {
+export class HttpError extends Error {
   constructor(status, message) {
     super(message);
     this.status = status;
   }
 }
 
-function json(data, status = 200, cookie) {
+export function json(data, status = 200, cookie) {
   const headers = {
     "Content-Type": "application/json; charset=utf-8",
     "Cache-Control": "no-store",

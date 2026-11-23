@@ -188,3 +188,17 @@ button.btn:disabled { opacity: .5; cursor: not-allowed; }
 .layer-motto { font: 600 20px/1.6 var(--serif) !important; color: var(--accent); }
 .pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--line); font: 15px var(--sans); }
 @media (max-width: 760px) { .layers { grid-template-columns: 1fr 1fr; } }
+.disclaimer { font-size: 13px !important; color: var(--muted); background: #f3efe6; border-radius: 6px; padding: 8px 12px; }
+
+/* ---- 投稿 ---- */
+.acc-form.wide { max-width: 760px; }
+.acc-form textarea, .acc-form select { font: 16px/1.7 var(--sans); padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); width: 100%; }
+.acc-form textarea { min-height: 320px; resize: vertical; }
+.radios { border: 0; padding: 0; margin: 0; display: grid; gap: 4px; }
+.radios legend { font: 15px var(--sans); padding: 0; margin-bottom: 4px; }
+.howto { margin: 14px 0; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 18px; }
+.howto summary { cursor: pointer; font: 600 15px var(--sans); color: var(--accent); }
+.prose .howto li { font: 15px/1.8 var(--sans); }
+.result.ok { border-left-color: var(--accent); }
+.result.bad { border-left-color: var(--accent-2); }
+.result h2 { margin-top: 12px; }

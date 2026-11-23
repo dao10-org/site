@@ -24,6 +24,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addCollection("dojos_zh", (api) =>
     api
       .getFilteredByGlob("src/zh/dojos/*.md")
+      .filter((d) => !d.data.draft) // draft: true 的道场（尚未获本人同意）不出现
       .sort((a, b) => a.data.joined.localeCompare(b.data.joined))
   );
   // 道场“二级网站”的分页：src/zh/dojos/<代号>/*.md，按 order 排序

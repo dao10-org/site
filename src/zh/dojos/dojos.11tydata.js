@@ -9,8 +9,9 @@ export default {
     // 分页所属道场 = 所在文件夹名
     dojoSlug: (data) =>
       isSubpage(data) ? data.page.filePathStem.split("/").at(-2) : data.page.fileSlug,
+    // draft: true = 草稿，不生成网页（例如还在等对方同意入驻）
     permalink: (data) =>
-      isSubpage(data)
+      data.draft ? false : isSubpage(data)
         ? `/zh/dojos/${data.page.filePathStem.split("/").at(-2)}/${data.page.fileSlug}/`
         : `/zh/dojos/${data.page.fileSlug}/`,
   },

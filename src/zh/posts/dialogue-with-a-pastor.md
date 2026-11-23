@@ -3,7 +3,6 @@ title: 与一位牧师谈“柔弱胜刚强”
 date: 2026-11-15
 dojo: open-circle
 author: 开放道学圈
-recommendedBy: [qingfeng]
 ---
 这个月的对话嘉宾是一位伦敦的牧师。他说，“柔弱胜刚强”让他想起登山宝训里的“温柔的人有福了”。
 

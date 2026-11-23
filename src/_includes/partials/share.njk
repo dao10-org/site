@@ -1,0 +1,14 @@
+{# 分享栏：纯链接，不加载任何第三方脚本（不泄露读者信息）。“复制链接”可直接粘贴到微信群等任何地方。 #}
+{%- set shareUrl = site.url + page.url -%}
+{%- set shareTitle = shareTitleOverride or title or site.name[lang] -%}
+<div class="share" data-url="{{ shareUrl }}" data-title="{{ shareTitle }}">
+  <span class="share-label">{{ "分享：" if lang == 'zh' else "Share:" }}</span>
+  <button type="button" class="tool-btn share-copy" hidden>{{ "复制链接" if lang == 'zh' else "Copy link" }}</button>
+  <button type="button" class="tool-btn share-native" hidden>{{ "更多…" if lang == 'zh' else "More…" }}</button>
+  <a class="tool-btn" rel="noopener" target="_blank" href="https://x.com/intent/tweet?text={{ shareTitle | enc }}&url={{ shareUrl | enc }}{% if site.social.x %}&via={{ site.social.x }}{% endif %}">X</a>
+  <a class="tool-btn" rel="noopener" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ shareUrl | enc }}">Facebook</a>
+  <a class="tool-btn" rel="noopener" target="_blank" href="https://t.me/share/url?url={{ shareUrl | enc }}&text={{ shareTitle | enc }}">Telegram</a>
+  <a class="tool-btn" href="mailto:?subject={{ shareTitle | enc }}&body={{ shareUrl | enc }}">{{ "邮件" if lang == 'zh' else "Email" }}</a>
+  <input class="share-url" type="text" readonly value="{{ shareUrl }}" aria-label="{{ '本页网址' if lang == 'zh' else 'Page address' }}">
+  <span class="share-done" role="status" aria-live="polite"></span>
+</div>

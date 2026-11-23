@@ -173,4 +173,33 @@
     const h = new URLSearchParams(location.search).get("id");
     if (h) { lq.value = h; apply(); }
   }
+
+  // ---------- 分享：复制“标题 + 网址”（适合粘贴到微信群）；手机上可调用系统分享 ----------
+  document.querySelectorAll(".share").forEach((box) => {
+    const url = box.dataset.url;
+    const title = box.dataset.title;
+    const done = box.querySelector(".share-done");
+    const zh = document.documentElement.lang.startsWith("zh");
+    const copyBtn = box.querySelector(".share-copy");
+    const field = box.querySelector(".share-url");
+    const say = (msg) => { done.textContent = msg; setTimeout(() => (done.textContent = ""), 3000); };
+    const text = zh ? `《${title}》\n${url}` : `${title}\n${url}`;
+    async function copy() {
+      try {
+        await navigator.clipboard.writeText(text);
+        say(zh ? "已复制，可直接粘贴到微信等聊天软件" : "Copied");
+      } catch (e) {
+        field.focus(); field.select();
+        say(zh ? "请按 Ctrl+C（手机长按）复制" : "Press Ctrl+C to copy");
+      }
+    }
+    copyBtn.hidden = false;
+    copyBtn.addEventListener("click", copy);
+    field.addEventListener("focus", () => field.select());
+    if (navigator.share) {
+      const nb = box.querySelector(".share-native");
+      nb.hidden = false;
+      nb.addEventListener("click", () => navigator.share({ title, url }).catch(() => {}));
+    }
+  });
 })();

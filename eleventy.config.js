@@ -25,6 +25,12 @@ export default function (eleventyConfig) {
       .getFilteredByGlob("src/zh/dojos/*.md")
       .sort((a, b) => a.data.joined.localeCompare(b.data.joined))
   );
+  // 道场“二级网站”的分页：src/zh/dojos/<代号>/*.md，按 order 排序
+  eleventyConfig.addCollection("dojopages_zh", (api) =>
+    api
+      .getFilteredByGlob("src/zh/dojos/*/*.md")
+      .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  );
 
   // ---- 过滤器 ----
   eleventyConfig.addFilter("ymd", (d) => {
@@ -35,6 +41,11 @@ export default function (eleventyConfig) {
   // 根据道场代号找到道场页面
   eleventyConfig.addFilter("dojo", (slug, dojos) =>
     (dojos || []).find((d) => d.fileSlug === slug)
+  );
+
+  // 某道场的分页
+  eleventyConfig.addFilter("pagesOf", (pages, slug) =>
+    (pages || []).filter((p) => p.data.dojoSlug === slug)
   );
 
   // 某道场名下的文章
@@ -67,6 +78,22 @@ export default function (eleventyConfig) {
     const t = plain(html);
     return t.length > n ? t.slice(0, n) + "……" : t;
   });
+
+  // Markdown 原文 → 纯文本摘要（用于分享卡片的描述）
+  eleventyConfig.addFilter("mdExcerpt", (md, n = 110) => {
+    const t = String(md || "")
+      .replace(/^---[\s\S]*?---/, "")          // 去掉 front matter
+      .replace(/<[^>]+>/g, " ")                   // HTML 标签
+      .replace(/\{[%{][\s\S]*?[%}]\}/g, " ")   // 模板语句
+      .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1") // 链接只留文字
+      .replace(/[#>*_`|~-]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    return t.length > n ? t.slice(0, n) + "……" : t;
+  });
+
+  // URL 编码（分享链接用）
+  eleventyConfig.addFilter("enc", (s) => encodeURIComponent(String(s ?? "")));
 
   // ---- 构建完成后：为离线合集生成 SHA-256 校验文件和清单 ----
   eleventyConfig.on("eleventy.after", async ({ dir }) => {

@@ -1,9 +1,13 @@
 ---
 layout: layouts/base.njk
 ---
-{% set mine = collections.posts_zh | postsOf(page.fileSlug) %}
+{% set slug = page.fileSlug %}
+{% set home = slug | dojo(collections.dojos_zh) %}
+{% set mine = collections.posts_zh | postsOf(slug) %}
+{% set subpages = collections.dojopages_zh | pagesOf(slug) %}
 <article class="dojo">
   <header class="dojo-head">
+    <p class="dojo-crumb"><a href="/zh/dojos/">道场</a> /</p>
     <h1>{{ title }}</h1>
     <p class="meta">
       <span class="badge">已签署共道宪章</span>
@@ -12,12 +16,21 @@ layout: layouts/base.njk
       入驻于 {{ joined }}
     </p>
     <p class="lead">{{ summary }}</p>
+    {% include "partials/dojo-nav.njk" %}
   </header>
   <section class="prose">
     {{ content | safe }}
   </section>
+  {% if subpages.length %}
+  <div class="cards dojo-cards">
+    {% for sp in subpages %}
+    <a class="card" href="{{ sp.url }}"><strong>{{ sp.data.title }}</strong>{% if sp.data.summary %}<span>{{ sp.data.summary }}</span>{% endif %}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% include "partials/share.njk" %}
   {% if website %}<p><a class="btn" href="{{ website }}" rel="noopener">访问该道场自己的网站 →</a></p>{% endif %}
-  <section>
+  <section id="posts">
     <h2>在本平台发表的文章（{{ mine.length }}）</h2>
     {% set list = mine %}{% include "partials/post-list.njk" %}
   </section>

@@ -1,0 +1,20 @@
+---
+layout: layouts/base.njk
+---
+{% set slug = dojoSlug %}
+{% set home = slug | dojo(collections.dojos_zh) %}
+{% set shareTitleOverride = title + " · " + home.data.title %}
+<article class="dojo">
+  <header class="dojo-head">
+    <p class="dojo-crumb"><a href="/zh/dojos/">道场</a> / <a href="{{ home.url }}">{{ home.data.title }}</a> /</p>
+    <h1>{{ title }}</h1>
+    {% include "partials/dojo-nav.njk" %}
+  </header>
+  <section class="prose">
+    {{ content | safe }}
+  </section>
+  <div class="prose">{% include "partials/share.njk" %}</div>
+  <footer class="post-foot prose">
+    <p>本页由道场“{{ home.data.title }}”自行撰写，代表该道场自己的看法，不代表平台立场。授权：{{ license or "CC BY-SA 4.0" }}。</p>
+  </footer>
+</article>

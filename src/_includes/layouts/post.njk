@@ -10,6 +10,7 @@ layout: layouts/base.njk
   </p>
   <h1>{{ title }}</h1>
   {{ content | safe }}
+  {% include "partials/share.njk" %}
   <footer class="post-foot">
     {% set others = recommendedBy | others(dojo) %}
     <p>授权：{{ license }} · 可自由转载、镜像、离线分发（请保留署名与出处）。</p>

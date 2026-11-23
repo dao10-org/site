@@ -1,0 +1,9 @@
+{# 道场二级网站的导航：首页 + 各分页 + 文章。需要变量 slug、home #}
+{% set subpages = collections.dojopages_zh | pagesOf(slug) %}
+{% if subpages.length %}
+<nav class="dojo-nav" aria-label="{{ home.data.title }}">
+  <a href="{{ home.url }}"{% if page.url == home.url %} aria-current="page"{% endif %}>道场首页</a>
+  {% for sp in subpages %}<a href="{{ sp.url }}"{% if page.url == sp.url %} aria-current="page"{% endif %}>{{ sp.data.navLabel or sp.data.title }}</a>{% endfor %}
+  <a href="{{ home.url }}#posts">文章</a>
+</nav>
+{% endif %}

@@ -121,3 +121,22 @@ code { background: #efeadf; border-radius: 4px; padding: 1px 5px; font-size: .9e
 .bar { height: 8px; background: #eeebe3; border-radius: 999px; overflow: hidden; }
 .bar i { display: block; height: 100%; background: var(--accent); }
 .card.project:hover { border-color: var(--line); }
+
+/* ---- 道场二级网站 ---- */
+.dojo-crumb { margin: 0; font-size: 14px; color: var(--muted); }
+.dojo-nav { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 14px 0 4px; padding: 8px 14px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
+.dojo-nav a { color: var(--ink); border-bottom: 2px solid transparent; }
+.dojo-nav a[aria-current="page"], .dojo-nav a:hover { border-bottom-color: var(--accent-2); text-decoration: none; }
+.dojo-cards { margin: 24px 0; }
+.verse { margin: 18px 0 26px; padding: 14px 20px; background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent-2); border-radius: var(--radius); }
+.verse .short { font: 600 24px/1.6 var(--serif); letter-spacing: .08em; margin: 0; }
+.verse .full { margin: 6px 0 0; }
+.verse .en { color: var(--muted); font: italic 15px/1.6 Georgia, serif; margin: 2px 0 0; }
+.prose .en { color: var(--muted); font: italic 15px/1.6 Georgia, serif; }
+
+/* ---- 分享栏 ---- */
+.share { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 32px 0 8px; padding-top: 14px; border-top: 1px dashed var(--line); font: 14px var(--sans); }
+.share-label { color: var(--muted); }
+.share .tool-btn { font-size: 13.5px; }
+.share-url { flex: 1 1 220px; min-width: 0; font: 13px var(--sans); color: var(--muted); padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); }
+.share-done { color: var(--accent); font-size: 13px; }

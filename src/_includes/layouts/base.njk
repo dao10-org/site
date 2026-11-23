@@ -3,8 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% if title %}{{ title }} · {% endif %}{{ site.name[lang] }}</title>
-  <meta name="description" content="{{ description or site.tagline[lang] }}">
+  {%- set fullTitle = (title + " · " if title else "") + site.name[lang] -%}
+  {%- set desc = description or summary or (page.rawInput | mdExcerpt if page.inputPath.endsWith(".md") else "") or site.tagline[lang] -%}
+  {%- set pageUrl = site.url + page.url -%}
+  <title>{{ fullTitle }}</title>
+  <meta name="description" content="{{ desc }}">
+  {# 分享卡片：X / Facebook / Telegram / LinkedIn 等读取这些标签显示标题、摘要和图片 #}
+  <meta property="og:site_name" content="{{ site.name[lang] }}">
+  <meta property="og:type" content="{{ 'article' if date and page.url.startsWith('/zh/library/') else 'website' }}">
+  <meta property="og:title" content="{{ title or site.name[lang] }}">
+  <meta property="og:description" content="{{ desc }}">
+  <meta property="og:url" content="{{ pageUrl }}">
+  <meta property="og:image" content="{{ site.url }}{{ shareImage or '/assets/img/share.png' }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="{{ 'zh_CN' if lang == 'zh' else 'en_US' }}">
+  <meta name="twitter:card" content="summary_large_image">
+  {% if site.social.x %}<meta name="twitter:site" content="@{{ site.social.x }}">{% endif %}
   {% if site.prototype %}<meta name="robots" content="noindex, nofollow">{% endif %}
   <link rel="canonical" href="{{ site.url }}{{ page.url }}">
   <link rel="stylesheet" href="/assets/css/style.css">
@@ -12,7 +27,7 @@
 </head>
 <body>
   {% if site.prototype %}
-  <div class="proto-banner">{{ "原型预览 · 所有道场与文章均为示例内容" if lang == 'zh' else "Prototype preview · all content is placeholder" }}</div>
+  <div class="proto-banner">{{ "原型预览 · 除发起团队的道场外，其余道场与文章均为示例内容" if lang == 'zh' else "Prototype preview · all content is placeholder" }}</div>
   {% endif %}
   <header class="site-header">
     <div class="wrap header-inner">

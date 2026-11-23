@@ -173,3 +173,18 @@ button.btn:disabled { opacity: .5; cursor: not-allowed; }
 .featured small { color: var(--muted); font: 13px var(--sans); }
 .featured strong { display: block; font: 600 22px/1.5 var(--serif); }
 .featured span { color: #57534a; font: 15px/1.7 var(--sans); }
+
+/* ---- 共生之道：四层结构 ---- */
+.dojo-subtitle { margin: -4px 0 6px; color: var(--muted); font: italic 16px/1.6 Georgia, var(--serif); }
+.layers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0 30px; font-family: var(--sans); }
+.layer { display: flex; flex-direction: column; gap: 4px; background: var(--card); border: 1px solid var(--line); border-top: 4px solid var(--accent); border-radius: var(--radius); padding: 14px 16px; color: var(--ink); }
+.layer:hover { border-color: var(--accent); text-decoration: none; }
+.layer b { color: var(--accent); font: 600 14px var(--sans); letter-spacing: .1em; }
+.layer strong { font: 600 19px/1.4 var(--serif); }
+.layer span { color: #57534a; font-size: 13.5px; line-height: 1.6; }
+.layer.whole { grid-column: 1 / -1; text-align: center; border-top-color: var(--accent-2); background: #fbf6ec; }
+.layer.whole b { color: var(--accent-2); }
+.layer.whole strong { font-size: 24px; letter-spacing: .1em; }
+.layer-motto { font: 600 20px/1.6 var(--serif) !important; color: var(--accent); }
+.pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--line); font: 15px var(--sans); }
+@media (max-width: 760px) { .layers { grid-template-columns: 1fr 1fr; } }

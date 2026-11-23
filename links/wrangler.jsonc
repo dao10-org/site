@@ -1,0 +1,13 @@
+// 道场子域名 → 道场页面（只做跳转，不存任何数据）
+// 新增道场子域名：在 HOSTS（src/index.js）加一行，再在下面 routes 加一项，然后部署。
+{
+  "name": "dao10-links",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": false,
+  "routes": [
+    { "pattern": "gongsheng.dao10.org", "custom_domain": true },
+    { "pattern": "way.dao10.org", "custom_domain": true }
+  ],
+  "observability": { "enabled": false }
+}

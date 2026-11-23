@@ -7,6 +7,7 @@ import path from "node:path";
 export default function (eleventyConfig) {
   // ---- 静态资源 ----
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
+  eleventyConfig.addPassthroughCopy({ "src/_redirects": "_redirects" }); // 短网址
   // 简繁转换库（本地托管，不依赖任何第三方 CDN，大陆和海外都能加载）
   eleventyConfig.addPassthroughCopy({
     "node_modules/opencc-js/dist/umd/cn2t.js": "assets/vendor/opencc-cn2t.js",
@@ -45,7 +46,7 @@ export default function (eleventyConfig) {
 
   // 某道场的分页
   eleventyConfig.addFilter("pagesOf", (pages, slug) =>
-    (pages || []).filter((p) => p.data.dojoSlug === slug)
+    (pages || []).filter((p) => p.data.dojoSlug === slug && p.data.inNav !== false)
   );
 
   // 某道场名下的文章

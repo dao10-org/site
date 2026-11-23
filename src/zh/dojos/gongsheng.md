@@ -1,5 +1,6 @@
 ---
 title: 共生之道
+subtitle: The Way of Symbiosis · 从自然规律到生命尊严，从个体关系到人类共同体
 kind: 团体
 location: 乌克兰
 joined: "2026-11-01"
@@ -12,6 +13,8 @@ summary: 以自然规律为根本认识，以生命尊严为价值基础，以�
 <strong>共生之道——从自然之道、生命之道到人类共生之道</strong>
 <span>自然之道、生命之道、人际之道、人类共同体之道，最终汇聚为共生之道；附六项实践原则与日常修习方法。</span>
 </a>
+
+{% include "partials/gongsheng-layers.njk" %}
 
 我们的理解可以归结为三句话，也是每天早晚修习时诵读的内容：
 

@@ -9,6 +9,7 @@ layout: layouts/base.njk
   <header class="dojo-head">
     <p class="dojo-crumb"><a href="/zh/dojos/">道场</a> /</p>
     <h1>{{ title }}</h1>
+    {% if subtitle %}<p class="dojo-subtitle">{{ subtitle }}</p>{% endif %}
     <p class="meta">
       <span class="badge">已签署共道宪章</span>
       {% if kind %}<span class="badge muted">{{ kind }}</span>{% endif %}

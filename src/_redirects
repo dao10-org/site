@@ -1,0 +1,5 @@
+# 短网址（Cloudflare Pages 规则）。用 302，以后改指向不会被浏览器缓存住。
+/gongsheng       /zh/dojos/gongsheng/   302
+/gongsheng/*     /zh/dojos/gongsheng/:splat   302
+/way             /zh/dojos/gongsheng/   302
+/way/*           /zh/dojos/gongsheng/:splat   302

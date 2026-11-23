@@ -3,7 +3,7 @@
 Cloudflare Worker + D1 数据库，只处理 `dao10.org/api/*`。主站和所有道场二级网站在同一个域名下，登录一次全站通用。
 
 - 不收集邮箱、手机号、IP；密码、登录令牌、恢复码只存哈希
-- 和 AU139 完全分开：独立的数据库，部署在 gongshengwenming 的 Cloudflare 账号
+- 和 AU139 完全分开：独立的数据库，部署在 gongdaowenming 的 Cloudflare 账号
 
 ## 测试（不需要 Cloudflare）
 

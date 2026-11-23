@@ -202,3 +202,11 @@ button.btn:disabled { opacity: .5; cursor: not-allowed; }
 .result.ok { border-left-color: var(--accent); }
 .result.bad { border-left-color: var(--accent-2); }
 .result h2 { margin-top: 12px; }
+
+/* ---- 外部链接条目（公众号文章、视频等） ---- */
+.badge.ext { background: #e6eef7; color: #2e5a87; }
+.ext-card { display: block; margin: 18px 0 8px; padding: 16px 20px; background: var(--card); border: 1px solid var(--line); border-left: 4px solid #2e5a87; border-radius: var(--radius); color: var(--ink); font-family: var(--sans); }
+.ext-card:hover { border-color: #2e5a87; text-decoration: none; }
+.ext-card small { display: block; color: var(--muted); font-size: 13px; }
+.ext-card strong { display: block; font: 600 20px/1.5 var(--serif); color: #2e5a87; }
+.ext-card span { display: block; color: var(--muted); font-size: 12.5px; word-break: break-all; }

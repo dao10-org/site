@@ -50,6 +50,19 @@
     return el;
   };
 
+  // 全文 / 外部链接 切换
+  const hint = $("sub-body-hint").innerHTML;
+  form.querySelectorAll('input[name="mode"]').forEach((r) =>
+    r.addEventListener("change", () => {
+      const isLink = form.mode.value === "link";
+      $("sub-link-row").hidden = !isLink;
+      form.link.required = isLink;
+      $("sub-body-label").textContent = isLink ? "简介（可选）" : "正文";
+      $("sub-body-hint").innerHTML = isLink ? "用几句话介绍这篇文章或这段视频，最多 2000 字。原文版权归原作者。" : hint;
+      form.body.rows = isLink ? 5 : 18;
+    })
+  );
+
   form.querySelectorAll('input[name="sign"]').forEach((r) =>
     r.addEventListener("change", () => ($("sub-anon-tip").hidden = form.sign.value !== "anon"))
   );
@@ -58,6 +71,7 @@
     e.preventDefault();
     const btn = form.querySelector('button[type="submit"]');
     const v = Object.fromEntries(new FormData(form));
+    if (v.mode === "full" && (v.body || "").trim().length < 20) return say("正文太短", true);
     btn.disabled = true;
     btn.textContent = "AI 审核中，约 10–40 秒……";
     say("");
@@ -68,6 +82,7 @@
         anonymous: v.sign === "anon",
         title: v.title,
         body: v.body,
+        link: v.mode === "link" ? v.link : "",
         license: v.license,
         agree: !!v.agree,
       });

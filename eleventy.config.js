@@ -110,6 +110,35 @@ export default function (eleventyConfig) {
     return { html: out, toc };
   });
 
+  // 外部链接条目：识别平台和类型（文章 / 视频 / 音频）
+  // front matter 写 link: 网址；可选 linkKind: 视频 | 文章 | 音频 覆盖自动判断
+  const PLATFORMS = [
+    [/(^|\.)mp\.weixin\.qq\.com$/, "微信公众号", "文章"],
+    [/(^|\.)channels\.weixin\.qq\.com$/, "微信视频号", "视频"],
+    [/(^|\.)(youtube\.com|youtu\.be)$/, "YouTube", "视频"],
+    [/(^|\.)(x\.com|twitter\.com)$/, "X（Twitter）", "帖子"],
+    [/(^|\.)bilibili\.com$|(^|\.)b23\.tv$/, "哔哩哔哩", "视频"],
+    [/(^|\.)(douyin\.com|iesdouyin\.com)$/, "抖音", "视频"],
+    [/(^|\.)tiktok\.com$/, "TikTok", "视频"],
+    [/(^|\.)(facebook\.com|fb\.watch)$/, "Facebook", "帖子"],
+    [/(^|\.)instagram\.com$/, "Instagram", "帖子"],
+    [/(^|\.)t\.me$/, "Telegram", "帖子"],
+    [/(^|\.)vimeo\.com$/, "Vimeo", "视频"],
+    [/(^|\.)rumble\.com$/, "Rumble", "视频"],
+    [/(^|\.)zhihu\.com$/, "知乎", "文章"],
+    [/(^|\.)weibo\.(com|cn)$/, "微博", "帖子"],
+    [/(^|\.)xiaohongshu\.com$/, "小红书", "帖子"],
+    [/(^|\.)(podcasts\.apple\.com|xiaoyuzhoufm\.com|ximalaya\.com)$/, "播客", "音频"],
+    [/(^|\.)substack\.com$/, "Substack", "文章"],
+    [/(^|\.)medium\.com$/, "Medium", "文章"],
+  ];
+  eleventyConfig.addFilter("ext", (url, kind) => {
+    let host = "";
+    try { host = new URL(url).hostname.replace(/^www\./, ""); } catch { return null; }
+    const hit = PLATFORMS.find(([re]) => re.test(host));
+    return { url, host, platform: hit ? hit[1] : host, kind: kind || (hit ? hit[2] : "网页") };
+  });
+
   // URL 编码（分享链接用）
   eleventyConfig.addFilter("enc", (s) => encodeURIComponent(String(s ?? "")));
 

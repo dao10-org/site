@@ -2,8 +2,9 @@
 {% for p in list %}
   {% set pd = p.data.dojo | dojo(collections.dojos_zh) %}
   <li>
+    {% set x = p.data.link | ext(p.data.linkKind) if p.data.link else null %}
     <a class="post-title" href="{{ p.url }}">{{ p.data.title }}</a>
-    <span class="meta">{% if p.data.anonymous %}<span class="badge anon">匿名</span>{% endif %}{% if pd %}{{ pd.data.title }} · {% endif %}{{ p.data.author or "匿名作者" }} · {{ p.date | ymd }}</span>
+    <span class="meta">{% if x %}<span class="badge ext">{{ x.kind }} · {{ x.platform }}</span>{% endif %}{% if p.data.anonymous %}<span class="badge anon">匿名</span>{% endif %}{% if pd %}{{ pd.data.title }} · {% endif %}{{ p.data.author or "匿名作者" }} · {{ p.date | ymd }}{% if x %} · <a href="{{ x.url }}" target="_blank" rel="noopener nofollow">打开原{{ "视频" if x.kind == "视频" else "文" }} ↗</a>{% endif %}</span>
     <span class="excerpt">{{ p.content | excerpt }}</span>
   </li>
 {% else %}

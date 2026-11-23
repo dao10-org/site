@@ -10,6 +10,14 @@ layout: layouts/base.njk
   </p>
   <h1>{{ title }}</h1>
   {% if subtitle %}<p class="subtitle">——{{ subtitle }}</p>{% endif %}
+  {% if link %}{% set x = link | ext(linkKind) %}
+  <a class="ext-card" href="{{ x.url }}" target="_blank" rel="noopener nofollow">
+    <small>{{ x.kind }} · 发布在 {{ x.platform }}</small>
+    <strong>打开原{{ "视频" if x.kind == "视频" else ("音频" if x.kind == "音频" else "文") }} ↗</strong>
+    <span>{{ x.url }}</span>
+  </a>
+  <p class="meta">本页只收录标题、简介和链接，内容保存在外部平台，版权归原作者。外部平台可能需要登录或验证，也可能删除内容。{% if x.kind == "视频" %}为保护读者隐私，本站不嵌入外部播放器。{% endif %}</p>
+  {% endif %}
   {% set ch = content | chapters %}
   {% set chapters = ch.toc %}
   {% if chapters.length >= 4 %}
@@ -22,7 +30,8 @@ layout: layouts/base.njk
   {% include "partials/share.njk" %}
   <footer class="post-foot">
     {% set others = recommendedBy | others(dojo) %}
-    <p>授权：{{ license }} · 可自由转载、镜像、离线分发（请保留署名与出处）。</p>
+    {% if link %}<p>简介授权：{{ license }}。原{{ "视频" if (link | ext(linkKind)).kind == "视频" else "文" }}版权归原作者，以原平台的规定为准。</p>
+    {% else %}<p>授权：{{ license }} · 可自由转载、镜像、离线分发（请保留署名与出处）。</p>{% endif %}
     {% include "partials/disclaimer.njk" %}
     {% if others.length %}
     <p>来自其他道场的推荐：

@@ -20,11 +20,16 @@ export async function submit(request, body, env) {
 
   const title = String(body.title || "").replace(/\s+/g, " ").trim();
   const text = String(body.body || "").replace(/\r\n/g, "\n").trim();
+  const link = checkLink(body.link); // 外部链接条目（公众号文章、视频等）；空 = 全文投稿
   const anonymous = !!body.anonymous;
   const license = LICENSES.includes(body.license) ? body.license : LICENSES[0];
   if (title.length < 2 || title.length > 80) throw new HttpError(400, "标题需要 2–80 个字");
-  if (text.length < 20) throw new HttpError(400, "正文太短");
-  if (text.length > MAX_BODY) throw new HttpError(400, `正文不能超过 ${MAX_BODY} 字`);
+  if (link) {
+    if (text.length > 2000) throw new HttpError(400, "外部链接的简介不能超过 2000 字");
+  } else {
+    if (text.length < 20) throw new HttpError(400, "正文太短");
+    if (text.length > MAX_BODY) throw new HttpError(400, `正文不能超过 ${MAX_BODY} 字`);
+  }
   if (!body.agree) throw new HttpError(400, "请先确认投稿须知");
 
   // 投到哪个道场：必须是该道场的管理员或成员；空 = 个人投稿
@@ -40,7 +45,7 @@ export async function submit(request, body, env) {
   if (used >= DAILY_QUOTA) throw new HttpError(429, `每个账号每天最多投稿 ${DAILY_QUOTA} 篇，请明天再来`);
 
   // AI 审核
-  const verdict = await moderate(env, title, text);
+  const verdict = await moderate(env, title, link ? `${text}\n\n（外部链接：${link}）` : text);
   await countStat(env, verdict.ok);
   await env.DB.prepare("UPDATE users SET sub_day = ?, sub_count = ? WHERE id = ?").bind(day, used + 1, user.id).run();
   if (!verdict.ok) return json({ status: "rejected", reason: verdict.reason });
@@ -53,7 +58,7 @@ export async function submit(request, body, env) {
   const slug = `${date}-${id}`;
   const path = `${POSTS_DIR}/${slug}.md`;
   const url = `/zh/library/${slug}/`;
-  const file = renderPost({ title, text, date, dojo, author: anonymous ? null : user.display_name, license });
+  const file = renderPost({ title, text, date, dojo, author: anonymous ? null : user.display_name, license, link });
 
   if (anonymous) {
     const key = newManageKey();
@@ -197,7 +202,7 @@ export async function stats(env) {
 // ---------------- 生成 Markdown 文件 ----------------
 // 安全：投稿内容不经过模板引擎（templateEngineOverride: md）；“<”全部转义，不能插入 HTML 或脚本。
 // （“>”保留，Markdown 的引用写法仍可使用。）
-export function renderPost({ title, text, date, dojo, author, license }) {
+export function renderPost({ title, text, date, dojo, author, license, link }) {
   const q = (s) => JSON.stringify(s); // YAML 接受 JSON 格式的双引号字符串
   const lines = [
     "---",
@@ -207,6 +212,7 @@ export function renderPost({ title, text, date, dojo, author, license }) {
     author ? `author: ${q(author)}` : null,
     `anonymous: ${author ? "false" : "true"}`,
     `license: ${q(license)}`,
+    link ? `link: ${q(link)}` : null,
     "submitted: true",
     "templateEngineOverride: md",
     "---",
@@ -249,6 +255,20 @@ async function githubDelete(env, path, message) {
   const cur = await gh(env, "GET", path);
   if (!cur) return;
   await gh(env, "DELETE", path, { message, sha: cur.sha, committer: BOT, author: BOT });
+}
+
+// 外部链接：只接受 http/https 网址
+function checkLink(v) {
+  const s = String(v || "").trim();
+  if (!s) return "";
+  let u;
+  try {
+    u = new URL(s);
+  } catch {
+    throw new HttpError(400, "链接格式不对，请复制完整网址（以 https:// 开头）");
+  }
+  if (!["http:", "https:"].includes(u.protocol) || s.length > 1000) throw new HttpError(400, "链接格式不对");
+  return u.href;
 }
 
 // 管理密钥：和恢复码同样格式

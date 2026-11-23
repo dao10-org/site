@@ -33,9 +33,16 @@ description: 任何人都可以投稿。只要不违反“人权”“共生”�
       <label class="check"><input type="radio" name="sign" value="name" checked> 署我的显示名：<b id="sub-name"></b></label>
       <label class="check"><input type="radio" name="sign" value="anon"> 匿名发表</label>
     </fieldset>
+    <fieldset class="radios">
+      <legend>类型</legend>
+      <label class="check"><input type="radio" name="mode" value="full" checked> 全文：把文章内容放到平台上</label>
+      <label class="check"><input type="radio" name="mode" value="link"> 外部链接：内容在公众号、YouTube、X 等平台，这里只放标题、简介和链接</label>
+    </fieldset>
+    <label id="sub-link-row" hidden>链接 <small>完整网址，例如 https://mp.weixin.qq.com/s/……、https://www.youtube.com/watch?v=……</small>
+      <input name="link" type="url" inputmode="url" placeholder="https://"></label>
     <label>标题 <input name="title" maxlength="80" required></label>
-    <label>正文 <small>分段请空一行。可以用 Markdown：<code>## 小标题</code>、<code>**加粗**</code>、<code>&gt; 引用</code>、<code>- 列表</code>、<code>[文字](网址)</code>。</small>
-      <textarea name="body" rows="18" required></textarea>
+    <label><span id="sub-body-label">正文</span> <small id="sub-body-hint">分段请空一行。可以用 Markdown：<code>## 小标题</code>、<code>**加粗**</code>、<code>&gt; 引用</code>、<code>- 列表</code>、<code>[文字](网址)</code>。</small>
+      <textarea name="body" rows="18"></textarea>
     </label>
     <label>授权
       <select name="license">

@@ -122,3 +122,14 @@ test("未配置 GitHub 时提示功能开通中", async () => {
   await c("/api/register", { username: "early", password: "password1" });
   assert.equal((await c("/api/submit", { title: "标题", body: BODY, agree: true })).status, 503);
 });
+
+test("外部链接条目：只收标题、简介和链接", async () => {
+  const { env, c } = setup();
+  await c("/api/register", { username: "linker", password: "password1", displayName: "圆道" });
+  assert.equal((await c("/api/submit", { title: "一篇公众号文章", body: "", link: "javascript:alert(1)", agree: true })).status, 400);
+  assert.equal((await c("/api/submit", { title: "一篇公众号文章", body: "", link: "不是网址", agree: true })).status, 400);
+  const r = await c("/api/submit", { title: "一篇公众号文章", body: "简介", link: "https://mp.weixin.qq.com/s/abc", agree: true });
+  assert.equal(r.data.status, "published");
+  const file = [...repo.values()][0];
+  assert.match(file, /link: "https:\/\/mp\.weixin\.qq\.com\/s\/abc"/);
+});

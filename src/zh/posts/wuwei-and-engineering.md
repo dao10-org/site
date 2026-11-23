@@ -3,7 +3,7 @@ title: 无为不是不做，而是不添乱——一个工程师的体会
 date: 2026-11-06
 dojo: qingfeng
 author: 清风
-recommendedBy: [open-circle, gongdao-team]
+recommendedBy: [open-circle]
 ---
 做系统设计久了，会发现最难的不是“加功能”，而是忍住不加。一个好系统，往往是那些没有被多余的设计干扰的部分在默默运转。
 

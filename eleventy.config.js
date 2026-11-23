@@ -92,6 +92,22 @@ export default function (eleventyConfig) {
     return t.length > n ? t.slice(0, n) + "……" : t;
   });
 
+  // 长文目录：给每个 h2 加锚点（如 #第一章、#引言），可以直接分享到某一章
+  // 返回 { html, toc }
+  eleventyConfig.addFilter("chapters", (html) => {
+    const toc = [];
+    const used = new Set();
+    const out = String(html || "").replace(/<h2>([\s\S]*?)<\/h2>/g, (all, inner) => {
+      const text = inner.replace(/<[^>]+>/g, "").trim();
+      let id = text.split(/[：:]/)[0].replace(/[\s"'<>#?&]+/g, "") || "ch";
+      while (used.has(id)) id += "-";
+      used.add(id);
+      toc.push({ id, text });
+      return `<h2 id="${id}">${inner}</h2>`;
+    });
+    return { html: out, toc };
+  });
+
   // URL 编码（分享链接用）
   eleventyConfig.addFilter("enc", (s) => encodeURIComponent(String(s ?? "")));
 

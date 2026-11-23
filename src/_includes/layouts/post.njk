@@ -9,7 +9,16 @@ layout: layouts/base.njk
     {{ author or "匿名作者" }} · <time datetime="{{ page.date | ymd }}">{{ page.date | ymd }}</time>
   </p>
   <h1>{{ title }}</h1>
-  {{ content | safe }}
+  {% if subtitle %}<p class="subtitle">——{{ subtitle }}</p>{% endif %}
+  {% set ch = content | chapters %}
+  {% set chapters = ch.toc %}
+  {% if chapters.length >= 4 %}
+  <nav class="toc" aria-label="目录">
+    <strong>目录</strong>
+    <ol>{% for c in chapters %}<li><a href="#{{ c.id }}">{{ c.text }}</a></li>{% endfor %}</ol>
+  </nav>
+  {% endif %}
+  {{ ch.html | safe }}
   {% include "partials/share.njk" %}
   <footer class="post-foot">
     {% set others = recommendedBy | others(dojo) %}

@@ -1,8 +1,8 @@
 ---
 title: 共生不等于意见一致
 date: 2026-11-12
-dojo: gongdao-team
-author: 共道文明海外新生
+dojo: open-circle
+author: 开放道学圈
 recommendedBy: [qingfeng]
 ---
 有人问：一个平台上既有支持某些政策的人，也有反对的人，还能“共生”吗？

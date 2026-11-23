@@ -35,6 +35,10 @@
         "label": "投稿"
       },
       {
+        "url": "/zh/invite/",
+        "label": "邀请函"
+      },
+      {
         "url": "/zh/search/",
         "label": "搜索"
       }

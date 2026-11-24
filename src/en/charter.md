@@ -1,18 +1,34 @@
 ---
 layout: layouts/page.njk
 title: The Gongdao Charter (summary)
-status: Draft v0.1 — open for discussion, not yet in force. The Chinese text is authoritative.
+status: Draft v0.2 — open for discussion, not yet in force. The Chinese text is authoritative.
 permalink: /en/charter/
 ---
 
-The charter sets only the minimum baselines all participants share. **It does not define what the right Dao is.**
+The charter sets only the minimum baselines and the shared direction of all participants. **It does not define what the right Dao is.**
 
-1. **Human rights.** Every person has equal dignity and rights, including freedom of thought, belief, expression and association. No teaching may justify harm, coercion or discrimination.
-2. **Coexistence.** Communities are independent and equal. Disagree with ideas, never attack people. Learn from other religions, philosophies and the sciences.
-3. **The platform's role.** The platform is a channel and does not judge views. The founding team is just one participant, with no special position.
-4. **Conduct, not opinions.** Spam, personal attacks, doxxing (especially of anonymous authors), impersonation and clearly illegal content are removed. Opinions — including ones the founders disagree with — stay.
-5. **Anonymity.** Authors may publish anonymously; the platform keeps no link between accounts and anonymous posts.
-6. **Open licensing.** All content uses a licence that allows free copying and offline distribution (default CC BY-SA 4.0).
-7. **Moderation.** Automated by AI under fully published rules that cover conduct only. Decisions come with reasons and can be appealed.
-8. **Illegal content.** Anyone can report it; the platform acts on valid notices.
-9. **Amendment.** Every change is publicly recorded; any participant may propose amendments.
+Its foundation is one sentence: **human rights are the baseline; symbiosis is the direction.** Human rights say what must never be done to a person. Symbiosis says how we live and grow together with others. Where the two seem to conflict, human rights come first.
+
+**Definitions**
+
+- **Human rights**: the basic rights every person holds simply by being human — life, liberty and security, dignity, privacy, freedom of thought, belief, expression, assembly and association — regardless of sex, ethnicity, nationality, language, religion, belief, status, wealth or ability. The charter draws on the Universal Declaration of Human Rights.
+- **Symbiosis**: different people and groups, respecting each other's independence and rights, recognise that they depend on each other, welcome each other's growth, and improve their lives together through fair rules, cooperation and fair competition — never by harming others.
+
+**Shared principles**
+
+1. Respect life and equal dignity; no teaching or goal justifies violence, coercion or persecution.
+2. Independence and free exit: anyone may join or leave any community without threat or punishment.
+3. Fair competition: losing customers or readers in fair competition is not harm; deception, violence and sabotage are.
+4. Welcome others' growth, exchange and help each other; argue with ideas, never attack people.
+5. Shared responsibility for the weak, for nature and for future generations.
+
+**Three clarifications**: symbiosis does not mean everyone must cooperate; it does not forbid criticism, competition or defending one's interests; and respecting a group's existence does not mean endorsing everything it does.
+
+**Platform rules**
+
+1. **The platform's role.** A channel that does not judge views. The founding team is just one participant, with no special position.
+2. **Conduct, not opinions.** Removed: personal attacks, incitement against any person or group, doxxing (especially of anonymous authors), calls to eliminate or persecute groups, coercing people to join or stay in a group, spam, impersonation and clearly illegal content. Opinions — including ones the founders disagree with — stay.
+3. **Moderation.** Automated by AI under fully published rules that check only for crossing the baseline, never whether a text promotes the principles. Decisions come with reasons and can be appealed.
+4. **Anonymity.** Authors may publish anonymously; the platform keeps no link between accounts and anonymous posts.
+5. **Open licensing.** Default CC BY-SA 4.0, so content can be copied and distributed offline.
+6. **Amendment.** Every change is publicly recorded; any participant may propose amendments.

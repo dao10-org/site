@@ -12,7 +12,7 @@ Its foundation is one sentence: **human rights are the baseline; symbiosis is th
 **Definitions**
 
 - **Human rights**: the basic rights every person holds simply by being human — life, liberty and security, dignity, privacy, freedom of thought, belief, expression, assembly and association — regardless of sex, ethnicity, nationality, language, religion, belief, status, wealth or ability. The charter draws on the Universal Declaration of Human Rights.
-- **Symbiosis**: different people and groups, respecting each other's independence and rights, recognise that they depend on each other, welcome each other's growth, and improve their lives together through fair rules, cooperation and fair competition — never by harming others.
+- **Symbiosis**: different people and groups, respecting each other's independence and rights, recognise that they depend on each other, welcome each other's growth, and improve their lives together through fair rules, cooperation and fair competition — never by harming others. Interests may differ: we accept commercial civilisation, so differences are settled within the bounds of human rights by talking, negotiating and trading. Anything that asks the other side to give something up waits for their free consent; nothing is imposed by force, deception or harm.
 
 **Shared principles**
 

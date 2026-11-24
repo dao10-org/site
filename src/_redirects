@@ -3,3 +3,7 @@
 /gongsheng/*     /zh/dojos/gongsheng/:splat   302
 /way             /zh/dojos/gongsheng/   302
 /way/*           /zh/dojos/gongsheng/:splat   302
+
+# 已替换的文章：旧网址指向新文章
+/zh/library/starting-from-relationships/*   /zh/library/from-human-reality/   301
+/zh/library/starting-from-relationships     /zh/library/from-human-reality/   301

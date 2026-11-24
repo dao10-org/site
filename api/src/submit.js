@@ -58,7 +58,7 @@ export async function submit(request, body, env) {
   const slug = `${date}-${id}`;
   const path = `${POSTS_DIR}/${slug}.md`;
   const url = `/zh/library/${slug}/`;
-  const file = renderPost({ title, text, date, dojo, author: anonymous ? null : user.display_name, license, link });
+  const file = renderPost({ title, text, date, url, dojo, author: anonymous ? null : user.display_name, license, link });
 
   if (anonymous) {
     const key = newManageKey();
@@ -109,8 +109,52 @@ export async function withdrawAnon(body, env) {
 }
 
 async function removeSubmission(env, row) {
-  if (row.status === "published") await githubDelete(env, row.path, "作者撤回投稿");
-  await env.DB.prepare("UPDATE submissions SET status = 'withdrawn', file = NULL, manage_hash = NULL WHERE id = ?").bind(row.id).run();
+  const wasPublished = row.status === "published";
+  if (wasPublished) await githubDelete(env, row.path, "作者撤回投稿");
+  const purgeAt = wasPublished ? Math.floor(Date.now() / 1000) + 300 : null;
+  await env.DB.prepare("UPDATE submissions SET status = 'withdrawn', file = NULL, manage_hash = NULL, purge_at = ? WHERE id = ?")
+    .bind(purgeAt, row.id)
+    .run();
+  if (wasPublished) await purgeCache(env, [row.url]);
+}
+
+// ---------------- 清除 Cloudflare 缓存 ----------------
+// 撤回的文章从仓库删除后，dao10.org 的缓存里可能还留着旧页面（最长一周）。
+// 需要 Secret CF_PURGE_TOKEN（只对 dao10.org 有“Zone 读取 + 缓存清除”权限）；没配置时跳过。
+const SITE_ORIGINS = ["https://dao10.org", "https://www.dao10.org"];
+export async function purgeCache(env, urls) {
+  if (!env.CF_PURGE_TOKEN || !urls.length) return false;
+  const files = urls.flatMap((u) => SITE_ORIGINS.flatMap((o) => [o + u, o + u + "index.html"]));
+  try {
+    const cf = (path, init) =>
+      fetch("https://api.cloudflare.com/client/v4" + path, {
+        ...init,
+        headers: { Authorization: `Bearer ${env.CF_PURGE_TOKEN}`, "Content-Type": "application/json" },
+      }).then((r) => r.json());
+    const zone = env.CF_ZONE_ID || (await cf("/zones?name=dao10.org")).result?.[0]?.id;
+    if (!zone) throw new Error("找不到 dao10.org 的 zone");
+    for (let i = 0; i < files.length; i += 30) {
+      const r = await cf(`/zones/${zone}/purge_cache`, { method: "POST", body: JSON.stringify({ files: files.slice(i, i + 30) }) });
+      if (!r.success) throw new Error(JSON.stringify(r.errors));
+    }
+    return true;
+  } catch (e) {
+    console.error("purge failed", e.message);
+    return false;
+  }
+}
+
+// 定时任务：网站重建完成后再清一次缓存
+export async function purgeDue(env) {
+  if (!env.CF_PURGE_TOKEN) return;
+  const now = Math.floor(Date.now() / 1000);
+  const { results } = await env.DB.prepare("SELECT id, url FROM submissions WHERE purge_at IS NOT NULL AND purge_at <= ? LIMIT 50")
+    .bind(now)
+    .all();
+  if (!results.length) return;
+  if (await purgeCache(env, results.map((r) => r.url))) {
+    for (const r of results) await env.DB.prepare("UPDATE submissions SET purge_at = NULL WHERE id = ?").bind(r.id).run();
+  }
 }
 
 // ---------------- 定时任务：发布到期的匿名稿件 ----------------
@@ -203,12 +247,14 @@ export async function stats(env) {
 // ---------------- 生成 Markdown 文件 ----------------
 // 安全：投稿内容不经过模板引擎（templateEngineOverride: md）；“<”全部转义，不能插入 HTML 或脚本。
 // （“>”保留，Markdown 的引用写法仍可使用。）
-export function renderPost({ title, text, date, dojo, author, license, link }) {
+export function renderPost({ title, text, date, url, dojo, author, license, link }) {
   const q = (s) => JSON.stringify(s); // YAML 接受 JSON 格式的双引号字符串
   const lines = [
     "---",
     `title: ${q(title)}`,
     `date: ${date}`,
+    // 明确写出网址：Eleventy 会自动去掉文件名开头的日期，不写的话网址会对不上
+    url ? `permalink: ${q(url)}` : null,
     dojo ? `dojo: ${q(dojo)}` : null,
     author ? `author: ${q(author)}` : null,
     `anonymous: ${author ? "false" : "true"}`,

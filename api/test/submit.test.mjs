@@ -2,7 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import worker from "../src/index.js";
-import { renderPost } from "../src/submit.js";
+import { renderPost, purgeCache } from "../src/submit.js";
 import { makeD1, client } from "./helpers.mjs";
 
 // 假 GitHub：把“提交”的文件记在内存里
@@ -132,4 +132,26 @@ test("外部链接条目：只收标题、简介和链接", async () => {
   assert.equal(r.data.status, "published");
   const file = [...repo.values()][0];
   assert.match(file, /link: "https:\/\/mp\.weixin\.qq\.com\/s\/abc"/);
+});
+
+test("投稿文件写明网址，和接口返回的地址一致（Eleventy 会去掉文件名里的日期）", () => {
+  const f = renderPost({ title: "标题", text: "正文", date: "2026-11-24", url: "/zh/library/2026-11-24-abc12345/", dojo: "", author: "某人", license: "CC BY-SA 4.0" });
+  assert.match(f, /^permalink: "\/zh\/library\/2026-11-24-abc12345\/"$/m);
+});
+
+test("撤回后清除缓存：没配置钥匙时跳过；配置后按网址清除", async () => {
+  assert.equal(await purgeCache({}, ["/zh/library/x/"]), false);
+  const calls = [];
+  const orig = globalThis.fetch;
+  globalThis.fetch = async (u, init) => {
+    calls.push([u, init?.body]);
+    return { json: async () => (u.includes("?name=") ? { result: [{ id: "Z1" }] } : { success: true }) };
+  };
+  try {
+    assert.equal(await purgeCache({ CF_PURGE_TOKEN: "t" }, ["/zh/library/x/"]), true);
+  } finally {
+    globalThis.fetch = orig;
+  }
+  assert.match(calls[1][0], /\/zones\/Z1\/purge_cache$/);
+  assert.ok(JSON.parse(calls[1][1]).files.includes("https://dao10.org/zh/library/x/"));
 });

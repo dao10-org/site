@@ -7,7 +7,7 @@
 // - 注册时间只记到日期
 // - 用户可以随时自行注销，账号数据立即删除
 
-import { submit, mySubmissions, withdraw, withdrawAnon, publishDue, stats } from "./submit.js";
+import { submit, mySubmissions, withdraw, withdrawAnon, publishDue, purgeDue, stats } from "./submit.js";
 
 const COOKIE = "gd_s";
 const SESSION_DAYS = 30;
@@ -25,7 +25,7 @@ export default {
   },
   // 定时任务（每 30 分钟）：发布到期的匿名稿件
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(publishDue(env));
+    ctx.waitUntil(Promise.all([publishDue(env), purgeDue(env)]));
   },
 };
 

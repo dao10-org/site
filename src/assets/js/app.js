@@ -215,7 +215,13 @@
     if (location.hostname === "dao10.org") {
       fetch("/api/me", { credentials: "same-origin" })
         .then((r) => (r.ok ? r.json() : null))
-        .then((d) => d && setUser(d.user))
+        .then((d) => {
+          if (!d) return;
+          setUser(d.user);
+          // 给其他页面脚本用（例如道场页的“管理本道场”入口）
+          window.gdUser = d.user;
+          document.dispatchEvent(new CustomEvent("gd-me", { detail: d.user }));
+        })
         .catch(() => {});
     }
   }

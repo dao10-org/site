@@ -7,10 +7,11 @@ permalink: /zh/dojos/
 <p class="lead">“道场”可以是一个团体、一个学会，也可以是一个人。不问门派与师承，签署《共道宪章》即可入驻，所有道场使用同样的页面、享有同样的曝光规则。按入驻时间排列。</p>
 <div class="cards">
 {% for d in collections.dojos_zh %}
-  <a class="card" href="{{ d.url }}">
+  <a class="card{% if d.data.logo %} with-logo{% endif %}" href="{{ d.url }}">
+    {% if d.data.logo %}<img class="card-logo" src="{{ d.data.logo }}" alt="" width="48" height="48" loading="lazy">{% endif %}
     <strong>{{ d.data.title }}</strong>
     <span>{{ d.data.summary }}</span>
-    <small>{{ d.data.kind }} · {{ d.data.location }} · 入驻于 {{ d.data.joined }} · 文章 {{ (collections.posts_zh | postsOf(d.fileSlug)).length }} 篇</small>
+    <small>{% if d.data.kind %}{{ d.data.kind }} · {% endif %}{% if d.data.location %}{{ d.data.location }} · {% endif %}入驻于 {{ d.data.joined }} · 文章 {{ (collections.posts_zh | postsOf(d.fileSlug)).length }} 篇</small>
   </a>
 {% endfor %}
 </div>
@@ -19,7 +20,7 @@ permalink: /zh/dojos/
   <ol>
     <li>阅读《共道宪章》（人权是底线，共生是方向）。</li>
     <li>写信到 join@dao10.org：你是谁、你讲的道是什么。</li>
-    <li>我们为你建道场页面，你确认后上线。可以在本平台发表文章，也可以只放链接，指向你自己的公众号或网站。</li>
+    <li>我们为你开通道场，之后由你们自己在网站上管理：介绍怎么写、放哪些图片和联系方式（公开或只用站内留言）都由你们决定，也可以添加成员。可以在本平台发表文章，也可以只放链接，指向你自己的公众号或网站。</li>
   </ol>
   <p>详见<a href="/zh/invite/">邀请函</a>。</p>
 </div>

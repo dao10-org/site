@@ -3,6 +3,7 @@
 import { createHash } from "node:crypto";
 import { readFile, writeFile, readdir, mkdir } from "node:fs/promises";
 import path from "node:path";
+import markdownIt from "markdown-it";
 
 export default function (eleventyConfig) {
   // ---- 静态资源 ----
@@ -137,6 +138,24 @@ export default function (eleventyConfig) {
     try { host = new URL(url).hostname.replace(/^www\./, ""); } catch { return null; }
     const hit = PLATFORMS.find(([re]) => re.test(host));
     return { url, host, platform: hit ? hit[1] : host, kind: kind || (hit ? hit[2] : "网页") };
+  });
+
+  // 道场在网页上自己编辑的介绍（Markdown）：不允许 HTML（自动转义），不允许外链图片（保护读者隐私），
+  // 图片只能通过“道场图片”上传到本站。
+  const userMd = markdownIt({ html: false, linkify: true, breaks: true }).disable("image");
+  const defaultLink = userMd.renderer.rules.link_open || ((t, i, o, e, s) => s.renderToken(t, i, o));
+  userMd.renderer.rules.link_open = (tokens, idx, opts, env, self) => {
+    tokens[idx].attrSet("rel", "noopener nofollow");
+    return defaultLink(tokens, idx, opts, env, self);
+  };
+  eleventyConfig.addFilter("mdUser", (s) => userMd.render(String(s || "")));
+
+  // 联系方式：网址、邮箱变成链接，其他（微信号、视频号名称等）只显示文字
+  eleventyConfig.addFilter("contactHref", (v) => {
+    const s = String(v || "").trim();
+    if (/^https?:\/\/\S+$/i.test(s)) return s;
+    if (/^[^\s@<>]+@[^\s@<>]+\.[a-z]{2,}$/i.test(s)) return "mailto:" + s;
+    return null;
   });
 
   // URL 编码（分享链接用）

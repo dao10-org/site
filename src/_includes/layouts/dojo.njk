@@ -1,27 +1,44 @@
 ---
 layout: layouts/base.njk
 ---
+{# 道场首页。资料来自 <代号>.11tydata.json（道场管理员在网站上编辑）；<代号>.md 的正文是手工制作的固定版块。 #}
 {% set slug = page.fileSlug %}
 {% set home = slug | dojo(collections.dojos_zh) %}
 {% set mine = collections.posts_zh | postsOf(slug) %}
 {% set subpages = collections.dojopages_zh | pagesOf(slug) %}
 <article class="dojo">
-  <header class="dojo-head">
-    <p class="dojo-crumb"><a href="/zh/dojos/">道场</a> /</p>
-    <h1>{{ title }}</h1>
-    {% if subtitle %}<p class="dojo-subtitle">{{ subtitle }}</p>{% endif %}
-    <p class="meta">
-      <span class="badge">已签署共道宪章</span>
-      {% if kind %}<span class="badge muted">{{ kind }}</span>{% endif %}
-      {% if location %}<span class="badge muted">{{ location }}</span>{% endif %}
-      入驻于 {{ joined }}
-    </p>
-    <p class="lead">{{ summary }}</p>
-    {% include "partials/dojo-nav.njk" %}
+  <header class="dojo-head{% if logo %} has-logo{% endif %}">
+    {% if logo %}<img class="dojo-logo" src="{{ logo }}" alt="{{ title }} 的标识" width="96" height="96">{% endif %}
+    <div>
+      <p class="dojo-crumb"><a href="/zh/dojos/">道场</a> / <a id="dojo-manage" href="/zh/dojo-admin/?d={{ slug }}" data-slug="{{ slug }}" hidden>管理本道场</a></p>
+      <h1>{{ title }}</h1>
+      {% if subtitle %}<p class="dojo-subtitle">{{ subtitle }}</p>{% endif %}
+      <p class="meta">
+        <span class="badge">已签署共道宪章</span>
+        {% if kind %}<span class="badge muted">{{ kind }}</span>{% endif %}
+        {% if location %}<span class="badge muted">{{ location }}</span>{% endif %}
+        入驻于 {{ joined }}
+      </p>
+      {% if summary %}<p class="lead">{{ summary }}</p>{% endif %}
+    </div>
   </header>
+  {% include "partials/dojo-nav.njk" %}
   <section class="prose">
+    {% if intro %}{{ intro | mdUser | safe }}{% endif %}
     {{ content | safe }}
   </section>
+
+  {% if images and images.length %}
+  <section class="dojo-gallery" aria-label="道场图片">
+    {% for im in images %}
+    <figure>
+      <a href="{{ im.src }}"><img src="{{ im.src }}" alt="{{ im.caption or title }}" loading="lazy"></a>
+      {% if im.caption %}<figcaption>{{ im.caption }}</figcaption>{% endif %}
+    </figure>
+    {% endfor %}
+  </section>
+  {% endif %}
+
   {% if subpages.length %}
   <div class="cards dojo-cards">
     {% for sp in subpages %}
@@ -29,10 +46,39 @@ layout: layouts/base.njk
     {% endfor %}
   </div>
   {% endif %}
+
+  {% if website or (contacts and contacts.length) or relay %}
+  <section class="dojo-contact" id="contact">
+    <h2>联系与关注</h2>
+    {% if website %}<p><a class="btn" href="{{ website }}" rel="noopener nofollow">访问该道场自己的网站 →</a></p>{% endif %}
+    {% if contacts and contacts.length %}
+    <dl class="contact-list">
+      {% for c in contacts %}
+      {% set href = c.value | contactHref %}
+      <div><dt>{{ c.label or "联系" }}</dt><dd>{% if href %}<a href="{{ href }}" rel="noopener nofollow">{{ c.value }}</a>{% else %}{{ c.value }}{% endif %}</dd></div>
+      {% endfor %}
+    </dl>
+    {% endif %}
+    {% if relay %}
+    <details class="howto dojo-relay" id="dojo-relay" data-slug="{{ slug }}">
+      <summary>给道场留言</summary>
+      <p class="meta">留言通过本站转交给道场管理员，你不需要知道对方的联系方式，对方也看不到你的身份。平台不记录你的 IP 地址。如果希望得到回复，可以留下你愿意公开给道场的联系方式（可选）。</p>
+      <form class="acc-form wide">
+        <label>留言 <textarea name="body" rows="6" maxlength="3000" required></textarea></label>
+        <label>回复方式 <small>可选，例如邮箱、Telegram</small> <input name="contact" maxlength="200" autocomplete="off"></label>
+        <button class="btn" type="submit">发送</button>
+        <p class="acc-msg" role="status" aria-live="polite"></p>
+      </form>
+      <p class="relay-offline meta" hidden>留言只能在主站 <a href="https://dao10.org{{ page.url }}">dao10.org</a> 上发送。</p>
+    </details>
+    {% endif %}
+  </section>
+  {% endif %}
+
   {% include "partials/share.njk" %}
-  {% if website %}<p><a class="btn" href="{{ website }}" rel="noopener">访问该道场自己的网站 →</a></p>{% endif %}
   <section id="posts">
     <h2>在本平台发表的文章（{{ mine.length }}）</h2>
     {% set list = mine %}{% include "partials/post-list.njk" %}
   </section>
 </article>
+<script src="/assets/js/dojo.js" defer></script>

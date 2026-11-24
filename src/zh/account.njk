@@ -5,7 +5,7 @@ permalink: /zh/account/
 ---
 <div class="account prose">
   <h1>账号</h1>
-  <p class="lead">阅读、下载、分享都<strong>不需要</strong>账号。账号用于<a href="/zh/submit/">投稿</a>（署名或匿名）、撤回自己的文章，以后还用于评论和道场管理自己的二级网站。主站和所有道场共用这一个账号，登录一次即可。</p>
+  <p class="lead">阅读、下载、分享都<strong>不需要</strong>账号。账号用于<a href="/zh/submit/">投稿</a>（署名或匿名）、撤回自己的文章，管理自己的道场，以后还用于评论。主站和所有道场共用这一个账号，登录一次即可。</p>
 
   <div id="acc-offline" class="notice" hidden>
     <p>账号功能只在主站 <a href="https://dao10.org/zh/account/">dao10.org</a> 上可用。镜像站和离线合集只供阅读。</p>
@@ -64,7 +64,7 @@ permalink: /zh/account/
     <div id="acc-dojos" hidden>
       <h2>我管理的道场</h2>
       <ul id="acc-dojo-list"></ul>
-      <p class="meta">在线编辑道场二级网站的功能正在开发中。</p>
+      <p class="meta">点“管理”可以修改道场介绍（文字、图片、标识、联系方式）、添加成员、查看站内留言。</p>
     </div>
 
     <h2>我的投稿</h2>
@@ -100,4 +100,7 @@ permalink: /zh/account/
 
   <p id="acc-msg" class="acc-msg" role="status" aria-live="polite"></p>
 </div>
+<script type="application/json" id="dojo-names">{
+  {%- for d in collections.dojos_zh -%}{{ d.fileSlug | dump | safe }}:{{ d.data.title | dump | safe }}{% if not loop.last %},{% endif %}{%- endfor -%}
+}</script>
 <script src="/assets/js/account.js" defer></script>

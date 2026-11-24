@@ -7,7 +7,9 @@
     msg.textContent = t || "";
     msg.classList.toggle("bad", !!bad);
   };
-  let pendingUser = null; // 保存好恢复码后再显示的用户
+  let pendingUser = null;
+  const namesEl = $("dojo-names");
+  const dojoNames = namesEl ? JSON.parse(namesEl.textContent || "{}") : {}; // 保存好恢复码后再显示的用户
 
   async function api(path, body) {
     const init = body
@@ -42,8 +44,12 @@
       const li = document.createElement("li");
       const a = document.createElement("a");
       a.href = "/zh/dojos/" + encodeURIComponent(slug) + "/";
-      a.textContent = slug;
-      li.appendChild(a);
+      a.textContent = dojoNames[slug] || slug;
+      const m = document.createElement("a");
+      m.className = "tool-btn small";
+      m.href = "/zh/dojo-admin/?d=" + encodeURIComponent(slug);
+      m.textContent = "管理";
+      li.append(a, m);
       list.appendChild(li);
     });
     $("acc-dojos").hidden = !u.dojos.length;

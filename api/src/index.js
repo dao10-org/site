@@ -8,6 +8,7 @@
 // - 用户可以随时自行注销，账号数据立即删除
 
 import { submit, mySubmissions, withdraw, withdrawAnon, publishDue, purgeDue, stats } from "./submit.js";
+import { getDojo, saveDojo, setMember, postMessage, messageAction, purgeOldMessages } from "./dojo.js";
 
 const COOKIE = "gd_s";
 const SESSION_DAYS = 30;
@@ -25,7 +26,7 @@ export default {
   },
   // 定时任务（每 30 分钟）：发布到期的匿名稿件
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(Promise.all([publishDue(env), purgeDue(env)]));
+    ctx.waitUntil(Promise.all([publishDue(env), purgeDue(env), purgeOldMessages(env)]));
   },
 };
 
@@ -38,10 +39,12 @@ async function route(request, env) {
   if (method === "GET" && path === "/api/me") return me(request, env);
   if (method === "GET" && path === "/api/my-submissions") return mySubmissions(request, env);
   if (method === "GET" && path === "/api/moderation-stats") return stats(env);
+  if (method === "GET" && path === "/api/dojo") return getDojo(request, url, env);
   if (method !== "POST") throw new HttpError(404, "没有这个接口");
 
   checkOrigin(request, env);
-  const body = await readJson(request);
+  // 道场资料可能带图片，单独放宽大小限制
+  const body = await readJson(request, path === "/api/dojo/save" ? 16 * 1024 * 1024 : 10000);
 
   switch (path) {
     case "/api/register":
@@ -66,6 +69,15 @@ async function route(request, env) {
       return submit(request, body, env);
     case "/api/withdraw":
       return withdraw(request, body, env);
+    case "/api/dojo/save":
+      return saveDojo(request, body, env);
+    case "/api/dojo/member":
+      return setMember(request, body, env);
+    case "/api/dojo/messages":
+      return messageAction(request, body, env);
+    case "/api/dojo/message":
+      await limit(request, env, "message");
+      return postMessage(body, env);
     case "/api/withdraw-anon":
       await limit(request, env, "withdraw");
       return withdrawAnon(body, env);
@@ -251,11 +263,11 @@ function checkOrigin(request, env) {
   if (!origin || !allowed.includes(origin)) throw new HttpError(403, "请从本站页面操作");
 }
 
-async function readJson(request) {
+async function readJson(request, max = 10000) {
   const type = request.headers.get("Content-Type") || "";
   if (!type.includes("application/json")) throw new HttpError(415, "格式不对");
   const text = await request.text();
-  if (text.length > 10000) throw new HttpError(413, "内容太长");
+  if (text.length > max) throw new HttpError(413, "内容太长");
   try {
     const v = JSON.parse(text || "{}");
     if (typeof v !== "object" || v === null) throw 0;

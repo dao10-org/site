@@ -1,0 +1,109 @@
+---
+layout: layouts/base.njk
+title: 管理道场
+permalink: /zh/dojo-admin/
+eleventyExcludeFromCollections: true
+---
+<div class="account dojo-admin prose">
+  <h1>管理道场 <small id="da-title"></small></h1>
+
+  <div id="da-offline" class="notice" hidden><p>道场管理只能在主站 <a href="https://dao10.org/zh/dojo-admin/">dao10.org</a> 上进行。</p></div>
+  <div id="da-loading" class="meta">正在加载……</div>
+  <div id="da-guest" class="notice" hidden><p>请先<a href="/zh/account/">登录</a>。只有道场管理员可以管理道场。</p></div>
+  <div id="da-none" class="notice" hidden><p>你还不是任何道场的管理员。想入驻请看<a href="/zh/dojos/">道场</a>页的“如何入驻”。</p></div>
+  <div id="da-pick" hidden><p>选择要管理的道场：</p><ul id="da-pick-list"></ul></div>
+
+  <section id="da-main" hidden>
+    <p class="meta"><a id="da-view" href="#">查看道场页面 →</a></p>
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab" data-tab="profile" aria-selected="true">道场介绍</button>
+      <button type="button" class="tab" data-tab="members" aria-selected="false">成员</button>
+      <button type="button" class="tab" data-tab="messages" aria-selected="false">留言 <span id="da-unread"></span></button>
+    </div>
+
+    {# ---------- 道场介绍 ---------- #}
+    <form id="da-profile" class="acc-form wide" data-pane="profile">
+      <p class="meta">怎么介绍你们的道场，由你们自己决定：文字、图片、标识、联系方式、视频号……都可以放，也都可以不放。保存时 AI 只检查是否越过人权与共生的底线，不评判观点。保存后约 1–2 分钟网站更新。</p>
+
+      <fieldset class="da-group">
+        <legend>基本信息</legend>
+        <label>名称 <input name="title" maxlength="40" required></label>
+        <label>副标题 <small>可选，例如英文名或一句口号</small> <input name="subtitle" maxlength="120"></label>
+        <div class="da-row">
+          <label>类型 <small>可选，自己写</small>
+            <input name="kind" maxlength="12" list="da-kinds">
+            <datalist id="da-kinds"><option value="团体"><option value="个人"><option value="学会"><option value="学派"><option value="书院"><option value="读书会"><option value="道观"><option value="修习小组"></datalist>
+          </label>
+          <label>所在地 <small>可选，可以只写国家或“线上”</small> <input name="location" maxlength="30"></label>
+        </div>
+        <label>一句话简介 <small>显示在道场列表的卡片上，160 字以内</small> <textarea name="summary" rows="2" maxlength="160" class="short"></textarea></label>
+      </fieldset>
+
+      <fieldset class="da-group">
+        <legend>标识</legend>
+        <div class="da-logo">
+          <img id="da-logo-img" alt="" hidden>
+          <div>
+            <button type="button" class="tool-btn" id="da-logo-pick">上传标识</button>
+            <button type="button" class="tool-btn" id="da-logo-del" hidden>去掉</button>
+            <p class="meta">徽标、印章或头像均可，也可以不放。会自动裁成正方形。</p>
+          </div>
+        </div>
+        <input type="file" id="da-logo-file" accept="image/*" hidden>
+      </fieldset>
+
+      <fieldset class="da-group">
+        <legend>详细介绍</legend>
+        <label><small>你们是谁、讲的道是什么、怎样修习……分段请空一行。可以用 Markdown：<code>## 小标题</code>、<code>**加粗**</code>、<code>&gt; 引用</code>、<code>- 列表</code>、<code>[文字](网址)</code>。图片请用下面的“图片”上传。</small>
+          <textarea name="intro" rows="14" maxlength="20000"></textarea></label>
+      </fieldset>
+
+      <fieldset class="da-group">
+        <legend>图片</legend>
+        <p class="meta">最多 12 张，显示在介绍下方。上传前会在你的浏览器里缩小，并去掉照片里的拍摄地点、设备等信息。</p>
+        <div id="da-images" class="da-images"></div>
+        <p><button type="button" class="tool-btn" id="da-img-pick">添加图片</button></p>
+        <input type="file" id="da-img-file" accept="image/*" multiple hidden>
+      </fieldset>
+
+      <fieldset class="da-group">
+        <legend>联系方式与外部平台</legend>
+        <p class="meta">全部可选，不填就不显示。可以写网站、邮箱、公众号、视频号、YouTube、B站、Telegram、X……网址和邮箱会变成链接，其他内容原样显示。</p>
+        <label>自己的网站 <input name="website" type="url" inputmode="url" placeholder="https://"></label>
+        <div id="da-contacts"></div>
+        <p><button type="button" class="tool-btn" id="da-contact-add">添加一项</button></p>
+        <label class="check"><input type="checkbox" name="relay"> 开启<strong>站内留言</strong>：读者可以在道场页面上给你们留言，留言只在这里显示。这样不公开任何联系方式也能被联系到，你们的身份也不会暴露。</label>
+      </fieldset>
+
+      <button class="btn" type="submit">保存并提交审核</button>
+    </form>
+
+    {# ---------- 成员 ---------- #}
+    <div data-pane="members" hidden>
+      <p class="meta"><strong>成员</strong>可以把文章投到本道场；<strong>管理员</strong>还可以修改道场介绍、管理成员、看留言。成员名单不会公开显示。</p>
+      <ul id="da-members" class="post-list"></ul>
+      <h2>添加成员</h2>
+      <form id="da-add" class="acc-form">
+        <p class="meta">请对方先在本站<a href="/zh/account/">注册</a>，再把<strong>用户名</strong>（登录用的那个，不是显示名）告诉你。</p>
+        <label>用户名 <input name="username" autocomplete="off" pattern="[a-zA-Z0-9_]{3,24}" required></label>
+        <label>身份
+          <select name="action"><option value="member">成员</option><option value="admin">管理员</option></select>
+        </label>
+        <button class="btn" type="submit">添加</button>
+      </form>
+    </div>
+
+    {# ---------- 留言 ---------- #}
+    <div data-pane="messages" hidden>
+      <p class="meta">读者通过道场页面的“给道场留言”发来的留言。平台不记录留言人的 IP 或账号，留言保存 180 天后自动删除。<span id="da-relay-off" hidden>站内留言目前<strong>没有开启</strong>，可以在“道场介绍”里开启。</span></p>
+      <ul id="da-messages" class="post-list"></ul>
+    </div>
+  </section>
+
+  <div id="da-result" hidden></div>
+  <p id="da-msg" class="acc-msg" role="status" aria-live="polite"></p>
+</div>
+<script type="application/json" id="dojo-names">{
+  {%- for d in collections.dojos_zh -%}{{ d.fileSlug | dump | safe }}:{{ d.data.title | dump | safe }}{% if not loop.last %},{% endif %}{%- endfor -%}
+}</script>
+<script src="/assets/js/dojo-admin.js" defer></script>

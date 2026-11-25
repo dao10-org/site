@@ -1,9 +1,46 @@
-{# 道场二级网站的导航：首页 + 各分页 + 文章。需要变量 slug、home #}
-{% set subpages = collections.dojopages_zh | pagesOf(slug) %}
-{% if subpages.length %}
-<nav class="dojo-nav" aria-label="{{ home.data.title }}">
-  <a href="{{ home.url }}"{% if page.url == home.url %} aria-current="page"{% endif %}>道场首页</a>
-  {% for sp in subpages %}<a href="{{ sp.url }}"{% if page.url == sp.url %} aria-current="page"{% endif %}>{{ sp.data.navLabel or sp.data.title }}</a>{% endfor %}
-  <a href="{{ home.url }}#posts">文章</a>
+{#- 道场二级网站的菜单（放在页头里）。需要变量 dojoSlug、dojoHome。
+    - 一级菜单 = 道场首页 + 各一级分页 + 文章；分页再多也可以：超过 7 项的部分收进“更多”。
+    - 分页的 front matter 写 parent: <上级页面的文件名>，就成为该页的下级页面，在菜单里点开才看到，层数不限于两层也没关系（菜单只显示两层，更深的在页面里互相链接）。
+    - 投稿、搜索是平台共用功能，但都留在本道场的二级网站里。 -#}
+{%- set top = collections.dojopages_zh | pagesOf(dojoSlug) -%}
+{%- set limit = 6 -%}
+{%- macro item(sp) -%}
+  {%- set kids = collections.dojopages_zh | childrenOf(dojoSlug, sp.fileSlug) -%}
+  {%- if kids.length -%}
+    {%- set here = (page.url == sp.url) or (parent == sp.fileSlug and page.url.startsWith(dojoHome.url)) -%}
+    <details class="nav-drop">
+      <summary{% if here %} aria-current="page"{% endif %}>{{ sp.data.navLabel or sp.data.title }}</summary>
+      <div class="drop">
+        <a href="{{ sp.url }}"{% if page.url == sp.url %} aria-current="page"{% endif %}>{{ sp.data.navLabel or sp.data.title }} · 总览</a>
+        {%- for k in kids %}
+        <a href="{{ k.url }}"{% if page.url == k.url %} aria-current="page"{% endif %}>{{ k.data.navLabel or k.data.title }}</a>
+        {%- endfor %}
+      </div>
+    </details>
+  {%- else -%}
+    <a href="{{ sp.url }}"{% if page.url == sp.url %} aria-current="page"{% endif %}>{{ sp.data.navLabel or sp.data.title }}</a>
+  {%- endif -%}
+{%- endmacro -%}
+<nav class="wrap site-nav dojo-menu" aria-label="{{ dojoHome.data.title }}">
+  <a href="{{ dojoHome.url }}"{% if page.url == dojoHome.url %} aria-current="page"{% endif %}>道场首页</a>
+  {%- for sp in top %}{% if loop.index <= limit %}
+  {{ item(sp) }}
+  {%- endif %}{% endfor %}
+  {%- if top.length > limit %}
+  <details class="nav-drop">
+    <summary>更多</summary>
+    <div class="drop">
+      {%- for sp in top %}{% if loop.index > limit %}
+      <a href="{{ sp.url }}"{% if page.url == sp.url %} aria-current="page"{% endif %}>{{ sp.data.navLabel or sp.data.title }}</a>
+      {%- for k in collections.dojopages_zh | childrenOf(dojoSlug, sp.fileSlug) %}
+      <a class="sub" href="{{ k.url }}"{% if page.url == k.url %} aria-current="page"{% endif %}>{{ k.data.navLabel or k.data.title }}</a>
+      {%- endfor %}
+      {%- endif %}{% endfor %}
+    </div>
+  </details>
+  {%- endif %}
+  <a href="{{ dojoHome.url }}#posts">文章</a>
+  <span class="nav-gap" aria-hidden="true"></span>
+  <a href="/zh/dojos/{{ dojoSlug }}/submit/"{% if page.url.endsWith('/submit/') %} aria-current="page"{% endif %}>投稿</a>
+  <a href="/zh/dojos/{{ dojoSlug }}/search/"{% if page.url.endsWith('/search/') %} aria-current="page"{% endif %}>搜索</a>
 </nav>
-{% endif %}

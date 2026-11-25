@@ -1,7 +1,7 @@
 ---
 title: 第二层 · 生命之道
 summary: 珍爱生命，认识自己，协调身心。
-inNav: false
+parent: structure
 order: 12
 layerPrev: { url: /zh/dojos/gongsheng/nature/, label: 第一层 · 自然之道 }
 layerNext: { url: /zh/dojos/gongsheng/relations/, label: 第三层 · 人际之道 }

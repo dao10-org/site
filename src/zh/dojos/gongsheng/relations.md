@@ -1,7 +1,7 @@
 ---
 title: 第三层 · 人际之道
 summary: 尊重他人，以慈爱、善意和互助建立关系。
-inNav: false
+parent: structure
 order: 13
 layerPrev: { url: /zh/dojos/gongsheng/life/, label: 第二层 · 生命之道 }
 layerNext: { url: /zh/dojos/gongsheng/community/, label: 第四层 · 人类共同体之道 }

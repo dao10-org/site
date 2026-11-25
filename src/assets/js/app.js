@@ -107,7 +107,10 @@
       const terms = q.value.trim().split(/\s+/).filter(Boolean).map(norm);
       if (!terms.length) return (results.innerHTML = "");
       const hits = [];
+      // 道场二级网站里的搜索：默认只搜本道场
+      const only = q.dataset.dojo && document.querySelector("input[name=scope]:checked")?.value !== "all" ? q.dataset.dojo : "";
       for (const p of index) {
+        if (only && p.s !== only) continue;
         const t = norm(p.t), b = norm(p.b);
         let score = 0, pos = -1;
         for (const term of terms) {
@@ -130,6 +133,7 @@
     };
     let timer;
     q.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(run, 150); });
+    document.querySelectorAll("input[name=scope]").forEach((r) => r.addEventListener("change", run));
   }
 
   // ---------- 离线下载：读取构建时生成的清单与校验码 ----------
@@ -203,13 +207,41 @@
     }
   });
 
+  // ---------- “复制文字”按钮（例如邀请函页的转发短文字） ----------
+  document.querySelectorAll("[data-copy]").forEach((btn) => {
+    const field = document.getElementById(btn.dataset.copy);
+    const note = btn.parentElement.querySelector(".copy-msg");
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(field.value);
+        if (note) note.textContent = "已复制，可直接粘贴到微信、留言区等";
+      } catch (e) {
+        field.focus(); field.select();
+        if (note) note.textContent = "请按 Ctrl+C（手机长按）复制";
+      }
+    });
+  });
+
+  // ---------- 道场菜单的下拉：同时只展开一个，点别处收起 ----------
+  const drops = Array.from(document.querySelectorAll(".nav-drop"));
+  drops.forEach((d) => d.addEventListener("toggle", () => {
+    if (d.open) drops.forEach((o) => { if (o !== d) o.open = false; });
+  }));
+  document.addEventListener("click", (e) => {
+    drops.forEach((d) => { if (d.open && !d.contains(e.target)) d.open = false; });
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") drops.forEach((d) => (d.open = false));
+  });
+
   // ---------- 页头：显示登录状态（只在主站查询；镜像站、离线合集不发请求） ----------
   const accLink = document.getElementById("acc-link");
   if (accLink) {
     const setUser = (u) => {
       accLink.hidden = false; // 账号服务可用时才显示入口
-      accLink.textContent = u ? u.displayName : "登录";
-      accLink.title = u ? "我的账号" : "登录 / 注册";
+      // 登录后显示“我的账号”，不显示显示名：显示名可能和平台或道场同名，容易看混
+      accLink.textContent = u ? "我的账号" : "登录";
+      accLink.title = u ? "已登录：" + u.displayName : "登录 / 注册";
     };
     document.addEventListener("gd-user", (e) => setUser(e.detail));
     if (location.hostname === "dao10.org") {

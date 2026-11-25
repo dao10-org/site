@@ -1,7 +1,7 @@
 ---
 title: 第四层 · 人类共同体之道
 summary: 承担共同责任，维护共同利益，促进持续发展。
-inNav: false
+parent: structure
 order: 14
 layerPrev: { url: /zh/dojos/gongsheng/relations/, label: 第三层 · 人际之道 }
 layerNext: { url: /zh/dojos/gongsheng/structure/, label: 四层汇聚 · 共生之道 }

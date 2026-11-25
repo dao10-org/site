@@ -10,7 +10,7 @@ layout: layouts/base.njk
   <header class="dojo-head{% if logo %} has-logo{% endif %}">
     {% if logo %}<img class="dojo-logo" src="{{ logo }}" alt="{{ title }} 的标识" width="96" height="96">{% endif %}
     <div>
-      <p class="dojo-crumb"><a href="/zh/dojos/">道场</a> / <a id="dojo-manage" href="/zh/dojo-admin/?d={{ slug }}" data-slug="{{ slug }}" hidden>管理本道场</a></p>
+      <p class="dojo-crumb"><a id="dojo-manage" href="/zh/dojo-admin/?d={{ slug }}" data-slug="{{ slug }}" hidden>管理本道场</a></p>
       <h1>{{ title }}</h1>
       {% if subtitle %}<p class="dojo-subtitle">{{ subtitle }}</p>{% endif %}
       <p class="meta">
@@ -22,7 +22,6 @@ layout: layouts/base.njk
       {% if summary %}<p class="lead">{{ summary }}</p>{% endif %}
     </div>
   </header>
-  {% include "partials/dojo-nav.njk" %}
   <section class="prose">
     {% if intro %}{{ intro | mdUser | safe }}{% endif %}
     {{ content | safe }}

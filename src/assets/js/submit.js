@@ -142,6 +142,12 @@
         sel.appendChild(o);
       });
       if ((d.user.memberOf || []).length === 1) sel.value = d.user.memberOf[0];
+      // 从道场二级网站进来：默认投到这个道场；不是成员就提示会以个人名义发表
+      const here = form.dataset.dojo;
+      if (here) {
+        if ((d.user.memberOf || []).includes(here)) sel.value = here;
+        else { sel.value = ""; $("sub-dojo-hint").hidden = false; }
+      }
       form.hidden = false;
     })
     .catch(() => ($("sub-offline").hidden = false));

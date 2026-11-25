@@ -1,0 +1,14 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: collections.dojos_zh
+  size: 1
+  alias: d
+permalink: "/zh/dojos/{{ d.fileSlug }}/submit/"
+eleventyExcludeFromCollections: true
+eleventyComputed:
+  title: "投稿 · {{ d.data.title }}"
+  dojoSlug: "{{ d.fileSlug }}"
+---
+{# 每个道场二级网站里的投稿页：和主站投稿页相同，只是页头是道场的，并默认投到本道场 #}
+{% include "partials/submit-form.njk" %}

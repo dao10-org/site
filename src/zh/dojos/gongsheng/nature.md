@@ -1,7 +1,7 @@
 ---
 title: 第一层 · 自然之道
 summary: 认识自然，理解规律，顺道而行。
-inNav: false
+parent: structure
 order: 11
 layerPrev: { url: /zh/dojos/gongsheng/structure/, label: 四层结构 }
 layerNext: { url: /zh/dojos/gongsheng/life/, label: 第二层 · 生命之道 }

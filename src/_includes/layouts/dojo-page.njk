@@ -6,9 +6,8 @@ layout: layouts/base.njk
 {% set shareTitleOverride = title + " · " + home.data.title %}
 <article class="dojo">
   <header class="dojo-head">
-    <p class="dojo-crumb"><a href="/zh/dojos/">道场</a> / <a href="{{ home.url }}">{{ home.data.title }}</a> /</p>
+    <p class="dojo-crumb"><a href="{{ home.url }}">{{ home.data.title }}</a> /{% for sp in collections.dojopages_zh %}{% if parent and sp.data.dojoSlug == slug and sp.fileSlug == parent %} <a href="{{ sp.url }}">{{ sp.data.navLabel or sp.data.title }}</a> /{% endif %}{% endfor %}</p>
     <h1>{{ title }}</h1>
-    {% include "partials/dojo-nav.njk" %}
   </header>
   <section class="prose">
     {{ content | safe }}

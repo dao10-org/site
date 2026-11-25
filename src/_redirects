@@ -7,3 +7,6 @@
 # 已替换的文章：旧网址指向新文章
 /zh/library/starting-from-relationships/*   /zh/library/from-human-reality/   301
 /zh/library/starting-from-relationships     /zh/library/from-human-reality/   301
+
+# 邀请函短网址（邀请文字和邀请卡二维码都用它）
+/invite          /zh/invite/   302

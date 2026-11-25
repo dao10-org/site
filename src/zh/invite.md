@@ -6,6 +6,8 @@ permalink: /zh/invite/
 description: 共道文明是一个关于“道”的公共平台：保存、展示、交流。任何人都可以把自己关于道的思考放在这里——署名或匿名，个人或团体，不问门派与宗教，只守人权与共生的底线。
 ---
 
+<p class="meta"><a href="#forward">↓ 转发用的短文字和邀请卡</a></p>
+
 ## 把你关于“道”的思考，放在一个不会消失的地方
 
 你好！
@@ -63,3 +65,11 @@ description: 共道文明是一个关于“道”的公共平台：保存、展�
 平台设在海外，内容完全公开。如果你身处风险较高的地方，可以选择匿名发表；请不要用单位或学校的网络投稿。
 
 欢迎你，也欢迎你把这封邀请函转给身边在思考“道”的朋友。
+
+<section class="invite-kit" id="forward">
+<h2>转发这封邀请函</h2>
+<p class="meta">看到别人写得好，想邀请对方？复制下面这段话（不到 100 字）发私信或留言，也可以附上邀请卡图片，扫码就能读到这封邀请函。</p>
+<textarea id="invite-text" class="copy-field" rows="4" readonly>您好！拜读大作，很受启发。诚邀您加入“共道文明”：保存、交流当代道学思想的公益平台，不问门派宗教，只守人权与共生底线。可署名或匿名发文、建道场，版权归您，免费。详见 dao10.org/invite</textarea>
+<p><button type="button" class="btn" data-copy="invite-text">复制文字</button> <a class="btn ghost" href="/assets/img/invite-card.png" download="共道文明邀请函.png">下载邀请卡</a> <span class="copy-msg meta" role="status" aria-live="polite"></span></p>
+<p><img class="invite-card" src="/assets/img/invite-card.png" alt="共道文明邀请卡：扫码阅读邀请函 dao10.org/invite" width="360" height="480" loading="lazy"></p>
+</section>

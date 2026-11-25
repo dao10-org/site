@@ -29,6 +29,28 @@
   {% if site.prototype %}
   <div class="proto-banner">{{ "试运行 · 《共道宪章》仍是草案，欢迎提出意见" if lang == 'zh' else "Prototype preview · all content is placeholder" }}</div>
   {% endif %}
+  {%- set dojoHome = (dojoSlug | dojo(collections.dojos_zh)) if dojoSlug else null -%}
+  {% if dojoHome %}
+  {# 道场二级网站的页头：以道场自己为主，平台只留右上角一个回主站的按钮 #}
+  <header class="site-header dojo-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="{{ dojoHome.url }}">
+        {% if dojoHome.data.logo %}<img class="brand-logo" src="{{ dojoHome.data.logo }}" alt="" width="44" height="44">
+        {% else %}<span class="brand-initial" aria-hidden="true">{{ dojoHome.data.title | first }}</span>{% endif %}
+        <span>
+          <strong>{{ dojoHome.data.title }}</strong>
+          {% if dojoHome.data.subtitle %}<small>{{ dojoHome.data.subtitle | truncate(40) }}</small>{% endif %}
+        </span>
+      </a>
+      <div class="tools">
+        <button type="button" id="s2t-toggle" class="tool-btn" title="简体 / 繁體">繁</button>
+        <a class="tool-btn" id="acc-link" href="/zh/account/" hidden>登录</a>
+        <a class="tool-btn home-btn" href="/zh/" title="回到共道文明平台首页"><span aria-hidden="true">☯</span> {{ site.name.zh }} ↗</a>
+      </div>
+    </div>
+    {% include "partials/dojo-nav.njk" %}
+  </header>
+  {% else %}
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="/{{ lang }}/">
@@ -54,6 +76,7 @@
       {% endfor %}
     </nav>
   </header>
+  {% endif %}
 
   <main class="wrap" id="content">
     {{ content | safe }}
@@ -61,6 +84,9 @@
 
   <footer class="site-footer">
     <div class="wrap">
+      {% if dojoHome %}
+      <p><strong>{{ dojoHome.data.title }}</strong> 是 <a href="/zh/">共道文明</a> 平台上的道场，已签署<a href="/zh/charter/">《共道宪章》</a>。道场内容由道场自己撰写和负责，不代表平台立场。 · <a href="/zh/dojos/">其他道场</a></p>
+      {% endif %}
       {% if lang == 'zh' %}
       <p>平台只提供渠道，不评判观点。内容默认以 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh-hans">CC BY-SA 4.0</a> 授权，欢迎转载、镜像、离线分发。</p>
       <p><a href="/zh/guide/">网站说明</a> · <a href="/zh/charter/">共道宪章</a> · <a href="/zh/transparency/">AI 审核透明度</a> · <a href="/zh/finance/">经费制度</a> · <a href="/zh/ledger/">公开账目</a> · <a href="/zh/about/">关于</a> · 举报违法内容：report@dao10.org</p>

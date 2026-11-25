@@ -46,9 +46,13 @@ export default function (eleventyConfig) {
     (dojos || []).find((d) => d.fileSlug === slug)
   );
 
-  // 某道场的分页
+  // 某道场的一级分页（菜单第一层）。front matter 写 parent: <上级页面文件名> 的是下级页面，不在这里
   eleventyConfig.addFilter("pagesOf", (pages, slug) =>
-    (pages || []).filter((p) => p.data.dojoSlug === slug && p.data.inNav !== false)
+    (pages || []).filter((p) => p.data.dojoSlug === slug && p.data.inNav !== false && !p.data.parent)
+  );
+  // 某一级分页的下级页面（菜单里点开后看到的那一层）
+  eleventyConfig.addFilter("childrenOf", (pages, slug, parent) =>
+    (pages || []).filter((p) => p.data.dojoSlug === slug && p.data.parent === parent && p.data.inNav !== false)
   );
 
   // 某道场名下的文章

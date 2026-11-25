@@ -53,6 +53,7 @@
       list.appendChild(li);
     });
     $("acc-dojos").hidden = !u.dojos.length;
+    $("acc-site-stats").hidden = u.role !== "admin";
     show("acc-user");
     loadSubs();
     announce(u);

@@ -1,5 +1,6 @@
 ---
 layout: layouts/base.njk
+noHit: true
 title: 管理道场
 permalink: /zh/dojo-admin/
 eleventyExcludeFromCollections: true
@@ -19,6 +20,7 @@ eleventyExcludeFromCollections: true
       <button type="button" class="tab" data-tab="profile" aria-selected="true">道场介绍</button>
       <button type="button" class="tab" data-tab="members" aria-selected="false">成员</button>
       <button type="button" class="tab" data-tab="messages" aria-selected="false">留言 <span id="da-unread"></span></button>
+      <button type="button" class="tab" data-tab="stats" aria-selected="false">访问统计</button>
     </div>
 
     {# ---------- 道场介绍 ---------- #}
@@ -104,6 +106,12 @@ eleventyExcludeFromCollections: true
       <p class="meta">读者通过道场页面的“给道场留言”发来的留言。平台不记录留言人的 IP 或账号，留言保存 180 天后自动删除。<span id="da-relay-off" hidden>站内留言目前<strong>没有开启</strong>，可以在“道场介绍”里开启。</span></p>
       <ul id="da-messages" class="post-list"></ul>
     </div>
+
+    {# ---------- 访问统计 ---------- #}
+    <div data-pane="stats" hidden>
+      <p class="meta">本道场各页面（含本道场名下的文章）在 dao10.org 上被打开的次数。只统计次数，不统计人数，也不记录是谁打开的。这些数字只有本道场的管理员能看到，不公开。镜像站和离线合集里的阅读不在其中。</p>
+      <div class="gd-stats" id="da-stats"></div>
+    </div>
   </section>
 
   <div id="da-result" hidden></div>
@@ -112,4 +120,5 @@ eleventyExcludeFromCollections: true
 <script type="application/json" id="dojo-names">{
   {%- for d in collections.dojos_zh -%}{{ d.fileSlug | dump | safe }}:{{ d.data.title | dump | safe }}{% if not loop.last %},{% endif %}{%- endfor -%}
 }</script>
+<script src="/assets/js/stats-view.js?v={{ v }}" defer></script>
 <script src="/assets/js/dojo-admin.js?v={{ v }}" defer></script>

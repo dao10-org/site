@@ -276,3 +276,12 @@ button.btn:disabled { opacity: .5; cursor: not-allowed; }
 .invite-card { max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: var(--radius); }
 .da-tags { display: flex; flex-direction: column; gap: 2px; margin-top: 8px; }
 .da-tags-title small, .da-tags label small { color: var(--muted); font-size: 13px; }
+
+/* ---- 访问统计 ---- */
+.gd-stats select { padding: 6px 12px; border-radius: var(--radius); font: inherit; }
+.gd-stats-total { font-size: 15px; color: var(--muted); }
+.gd-stats-total strong { font: 600 28px var(--sans); color: var(--ink); margin-right: 4px; }
+.gd-bars { display: flex; align-items: flex-end; gap: 2px; height: 120px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.gd-bars span { flex: 1; background: var(--accent); border-radius: 2px 2px 0 0; min-width: 2px; opacity: .85; }
+.gd-bars span:hover { opacity: 1; }
+.gd-bars-axis { display: flex; justify-content: space-between; margin-top: 2px; font-size: 12px; }

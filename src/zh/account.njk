@@ -1,5 +1,6 @@
 ---
 layout: layouts/base.njk
+noHit: true
 title: 账号
 permalink: /zh/account/
 ---
@@ -61,6 +62,7 @@ permalink: /zh/account/
   {# ---------- 已登录 ---------- #}
   <section id="acc-user" hidden>
     <p>你好，<strong id="acc-name"></strong>（用户名 <code id="acc-username"></code>，注册于 <span id="acc-since"></span>）</p>
+    <p id="acc-site-stats" hidden><a class="btn ghost" href="/zh/stats/">全站访问统计</a> <small class="meta">只有平台管理员能看到</small></p>
     <div id="acc-dojos" hidden>
       <h2>我管理的道场</h2>
       <ul id="acc-dojo-list"></ul>

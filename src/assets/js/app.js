@@ -234,6 +234,15 @@
     if (e.key === "Escape") drops.forEach((d) => (d.open = false));
   });
 
+  // ---------- 打开次数：只告诉后台“这一页被打开了一次”，不带任何读者信息（只在主站） ----------
+  if (location.hostname === "dao10.org" && !document.body.hasAttribute("data-nohit")) {
+    fetch("/api/hit", {
+      method: "POST", keepalive: true, credentials: "omit",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ p: location.pathname, d: document.body.dataset.dojo || "" }),
+    }).catch(() => {});
+  }
+
   // ---------- 页头：显示登录状态（只在主站查询；镜像站、离线合集不发请求） ----------
   const accLink = document.getElementById("acc-link");
   if (accLink) {

@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="/assets/css/style.css?v={{ v }}">
   {# 不加载任何第三方字体、统计或脚本：大陆可访问，也不泄露读者信息 #}
 </head>
-<body>
+<body data-dojo="{{ dojoSlug or (dojo if dojo is string else '') }}"{% if noHit %} data-nohit{% endif %}>
   {% if site.prototype %}
   <div class="proto-banner">{{ "试运行 · 《共道宪章》仍是草案，欢迎提出意见" if lang == 'zh' else "Prototype preview · all content is placeholder" }}</div>
   {% endif %}

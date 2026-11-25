@@ -359,6 +359,7 @@
       document.querySelectorAll("[data-pane]").forEach((p) => (p.hidden = p.dataset.pane !== t.dataset.tab));
       $("da-result").hidden = true;
       say("");
+      if (t.dataset.tab === "stats" && window.gdStats) window.gdStats($("da-stats"), "slug=" + encodeURIComponent(slug));
       if (t.dataset.tab === "messages") {
         renderMessages();
         markRead().then(() => messages.forEach((m) => (m.isRead = 1)));

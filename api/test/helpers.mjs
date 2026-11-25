@@ -6,7 +6,7 @@ import worker from "../src/index.js";
 export function makeD1() {
   const db = new DatabaseSync(":memory:");
   db.exec("PRAGMA foreign_keys = ON;");
-  for (const f of ["0001_accounts.sql", "0002_submissions.sql", "0003_purge.sql", "0004_dojo.sql"])
+  for (const f of ["0001_accounts.sql", "0002_submissions.sql", "0003_purge.sql", "0004_dojo.sql", "0005_hits.sql"])
     db.exec(readFileSync(new URL("../migrations/" + f, import.meta.url), "utf8"));
   const stmt = (sql, args = []) => ({
     bind: (...a) => stmt(sql, a),

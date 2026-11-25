@@ -1,0 +1,21 @@
+---
+layout: layouts/base.njk
+title: 全站访问统计
+permalink: /zh/stats/
+noHit: true
+eleventyExcludeFromCollections: true
+---
+{# 只给平台管理员看（后台检查权限）；不在菜单里 #}
+<div class="account prose">
+  <h1>全站访问统计</h1>
+  <p class="meta">dao10.org 各页面被打开的次数。只统计次数，不统计人数，也不记录是谁打开的。本页只有平台管理员能看到数据；各道场的管理员在“管理本道场 → 访问统计”里看自己道场的数字。</p>
+  <div class="gd-stats" id="site-stats"></div>
+</div>
+<script src="/assets/js/stats-view.js?v={{ v }}" defer></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  if (location.hostname !== "dao10.org" && location.hostname !== "localhost") {
+    document.getElementById("site-stats").textContent = "统计只能在主站 dao10.org 上查看。";
+  } else window.gdStats(document.getElementById("site-stats"), "");
+});
+</script>

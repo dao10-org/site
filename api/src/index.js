@@ -9,6 +9,7 @@
 
 import { submit, mySubmissions, withdraw, withdrawAnon, publishDue, purgeDue, stats } from "./submit.js";
 import { getDojo, saveDojo, setMember, postMessage, messageAction, purgeOldMessages } from "./dojo.js";
+import { hit, getStats, purgeOldHits } from "./stats.js";
 
 const COOKIE = "gd_s";
 const SESSION_DAYS = 30;
@@ -26,7 +27,7 @@ export default {
   },
   // 定时任务（每 30 分钟）：发布到期的匿名稿件
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(Promise.all([publishDue(env), purgeDue(env), purgeOldMessages(env)]));
+    ctx.waitUntil(Promise.all([publishDue(env), purgeDue(env), purgeOldMessages(env), purgeOldHits(env)]));
   },
 };
 
@@ -40,6 +41,7 @@ async function route(request, env) {
   if (method === "GET" && path === "/api/my-submissions") return mySubmissions(request, env);
   if (method === "GET" && path === "/api/moderation-stats") return stats(env);
   if (method === "GET" && path === "/api/dojo") return getDojo(request, url, env);
+  if (method === "GET" && path === "/api/stats") return getStats(request, url, env);
   if (method !== "POST") throw new HttpError(404, "没有这个接口");
 
   checkOrigin(request, env);
@@ -78,6 +80,8 @@ async function route(request, env) {
     case "/api/dojo/message":
       await limit(request, env, "message");
       return postMessage(body, env);
+    case "/api/hit":
+      return hit(request, body, env);
     case "/api/withdraw-anon":
       await limit(request, env, "withdraw");
       return withdrawAnon(body, env);

@@ -22,7 +22,7 @@
   {% if site.social.x %}<meta name="twitter:site" content="@{{ site.social.x }}">{% endif %}
   {% if site.prototype %}<meta name="robots" content="noindex, nofollow">{% endif %}
   <link rel="canonical" href="{{ site.url }}{{ page.url }}">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/style.css?v={{ v }}">
   {# 不加载任何第三方字体、统计或脚本：大陆可访问，也不泄露读者信息 #}
 </head>
 <body>
@@ -96,6 +96,6 @@
       {% endif %}
     </div>
   </footer>
-  <script src="/assets/js/app.js" defer></script>
+  <script src="/assets/js/app.js?v={{ v }}" defer></script>
 </body>
 </html>

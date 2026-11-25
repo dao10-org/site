@@ -103,4 +103,4 @@ permalink: /zh/account/
 <script type="application/json" id="dojo-names">{
   {%- for d in collections.dojos_zh -%}{{ d.fileSlug | dump | safe }}:{{ d.data.title | dump | safe }}{% if not loop.last %},{% endif %}{%- endfor -%}
 }</script>
-<script src="/assets/js/account.js" defer></script>
+<script src="/assets/js/account.js?v={{ v }}" defer></script>

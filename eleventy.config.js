@@ -6,6 +6,8 @@ import path from "node:path";
 import markdownIt from "markdown-it";
 
 export default function (eleventyConfig) {
+  // 每次构建一个新版本号，加在脚本和样式的网址后面（?v=…），网站更新后浏览器马上用新文件，不会用缓存里的旧文件
+  eleventyConfig.addGlobalData("v", Date.now().toString(36));
   // ---- 静态资源 ----
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addPassthroughCopy({ "src/_redirects": "_redirects" }); // 短网址

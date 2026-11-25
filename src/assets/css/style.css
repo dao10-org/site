@@ -5,7 +5,7 @@
   --ink: #23221f;
   --muted: #77736a;
   --line: #e2dccf;
-  --accent: #2f6b5e;   /* 青 */
+  --accent: #3b7a4f;   /* 竹绿（2026-11-25 由青 #2f6b5e 改） */
   --accent-2: #a8432f; /* 朱 */
   --radius: 10px;
   --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
@@ -64,7 +64,7 @@ h2 { font-size: 21px; margin: 28px 0 10px; }
 .post-list .excerpt { color: #57534a; margin-top: 2px; }
 .empty { color: var(--muted); }
 
-.badge { display: inline-block; font-size: 12px; background: #e3efe9; color: var(--accent); border-radius: 4px; padding: 0 7px; margin-right: 4px; }
+.badge { display: inline-block; font-size: 12px; background: #e4f0e6; color: var(--accent); border-radius: 4px; padding: 0 7px; margin-right: 4px; }
 .badge.muted { background: #eeebe3; color: var(--muted); }
 .badge.anon { background: #ece6f3; color: #5b4a7a; }
 

@@ -4,7 +4,7 @@
 import qrcode
 from PIL import Image, ImageDraw, ImageFont
 W, H = 1080, 1440
-paper, card, ink, muted, green, red = "#f8f5ee", "#fffdf8", "#23221f", "#77736a", "#2f6b5e", "#a8432f"
+paper, card, ink, muted, green, red = "#f8f5ee", "#fffdf8", "#23221f", "#77736a", "#3b7a4f", "#a8432f"
 img = Image.new("RGB", (W, H), paper)
 d = ImageDraw.Draw(img)
 serif = "C:/Windows/Fonts/NotoSerifSC-VF.ttf"

@@ -8,11 +8,11 @@
 #   三段弧之间的空隙  彼此独立；三段弧合起来又近似一个环：共生
 #   中心圆点（朱红）  大家共同守护的底线：人权
 #
-# 颜色只用两种：青 #2f6b5e、朱 #a8432f（与网站相同）；另有单色版。
+# 颜色只用两种：竹绿 #3b7a4f、朱 #a8432f（与网站相同）；另有单色版。
 import math
 from PIL import Image, ImageDraw
 
-GREEN, RED, PAPER = "#2f6b5e", "#a8432f", "#f8f5ee"
+GREEN, RED, PAPER = "#3b7a4f", "#a8432f", "#f8f5ee"
 C = 100.0                       # 画布 200×200，圆心 (100,100)
 RING_R, RING_W = 92.0, 7.0      # 外圆
 CORE_R = 18.0                   # 中心圆点

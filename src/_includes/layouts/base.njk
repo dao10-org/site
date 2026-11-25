@@ -22,6 +22,9 @@
   {% if site.social.x %}<meta name="twitter:site" content="@{{ site.social.x }}">{% endif %}
   {% if site.prototype %}<meta name="robots" content="noindex, nofollow">{% endif %}
   <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/img/favicon.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
   <link rel="stylesheet" href="/assets/css/style.css?v={{ v }}">
   {# 不加载任何第三方字体、统计或脚本：大陆可访问，也不泄露读者信息 #}
 </head>
@@ -45,7 +48,7 @@
       <div class="tools">
         <button type="button" id="s2t-toggle" class="tool-btn" title="简体 / 繁體">繁</button>
         <a class="tool-btn" id="acc-link" href="/zh/account/" hidden>登录</a>
-        <a class="tool-btn home-btn" href="/zh/" title="回到共道文明平台首页"><span aria-hidden="true">☯</span> {{ site.name.zh }} ↗</a>
+        <a class="tool-btn home-btn" href="/zh/" title="回到共道文明平台首页"><img class="home-logo" src="/assets/img/logo.svg" alt="" width="18" height="18"> {{ site.name.zh }} ↗</a>
       </div>
     </div>
     {% include "partials/dojo-nav.njk" %}
@@ -54,7 +57,7 @@
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="/{{ lang }}/">
-        <span class="brand-mark">☯</span>
+        <img class="brand-mark" src="/assets/img/logo.svg" alt="" width="44" height="44">
         <span>
           <strong>{{ site.name[lang] }}</strong>
           <small>{{ site.tagline[lang] }}</small>

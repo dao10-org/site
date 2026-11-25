@@ -23,7 +23,8 @@ sym = ImageFont.truetype("C:/Windows/Fonts/seguisym.ttf", 92)
 t = "共道文明"; ft = font(104, 700)
 tw = d.textlength(t, font=ft); total = 110 + tw
 x0 = (W - total) / 2
-d.text((x0, 172), "☯", font=sym, fill=green)
+logo = Image.open("src/assets/img/logo-512.png").resize((96, 96), Image.LANCZOS)
+img.paste(logo, (int(x0), 180), logo)
 d.text((x0 + 110, 165), t, font=ft, fill=ink)
 center(310, "保存、交流当代人关于“道”的思想", font(40, 500), green)
 

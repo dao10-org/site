@@ -24,7 +24,7 @@ a:hover { text-decoration: underline; }
 .header-inner { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; padding-bottom: 6px; gap: 16px; }
 .brand { display: flex; align-items: center; gap: 12px; color: var(--ink); }
 .brand:hover { text-decoration: none; }
-.brand-mark { font-size: 34px; line-height: 1; color: var(--accent); }
+.brand-mark { width: 44px; height: 44px; flex: none; }
 .brand strong { display: block; font: 600 22px/1.2 var(--serif); letter-spacing: .08em; }
 .brand small { display: block; color: var(--muted); font-size: 13px; }
 .tools { display: flex; gap: 8px; }
@@ -248,7 +248,8 @@ button.btn:disabled { opacity: .5; cursor: not-allowed; }
 .brand-logo { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
 .brand-initial { width: 44px; height: 44px; border-radius: 50%; background: var(--accent); color: #fff; display: inline-flex; align-items: center; justify-content: center; font: 600 22px/1 var(--serif); flex: none; }
 .home-btn { white-space: nowrap; }
-.home-btn span { color: var(--accent); }
+.home-btn { display: inline-flex; align-items: center; gap: 5px; }
+.home-logo { width: 18px; height: 18px; }
 .dojo-menu { align-items: center; }
 .dojo-menu .nav-gap { flex: 1 1 auto; }
 .nav-drop { position: relative; }

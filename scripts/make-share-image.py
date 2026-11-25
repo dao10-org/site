@@ -13,7 +13,8 @@ def font(size, weight=400):
     return f
 d.rectangle([0, 0, W, 14], fill=green)
 d.rectangle([60, 120, 68, 420], fill=red)
-d.text((110, 120), "☯", font=ImageFont.truetype("C:/Windows/Fonts/seguisym.ttf", 96), fill=green)
+logo = Image.open("src/assets/img/logo-512.png").resize((110, 110), Image.LANCZOS)
+img.paste(logo, (108, 130), logo)
 d.text((240, 128), "共道文明", font=font(108, 700), fill=ink)
 d.text((112, 300), "道的文明 · 存、展、通", font=font(52, 500), fill=green)
 d.text((112, 380), "人权 · 共生 —— 当代人关于道的公共空间", font=font(36), fill=muted)

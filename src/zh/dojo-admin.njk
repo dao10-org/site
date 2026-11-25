@@ -37,6 +37,12 @@ eleventyExcludeFromCollections: true
           <label>所在地 <small>可选，可以只写国家或“线上”</small> <input name="location" maxlength="30"></label>
         </div>
         <label>一句话简介 <small>显示在道场列表的卡片上，160 字以内</small> <textarea name="summary" rows="2" maxlength="160" class="short"></textarea></label>
+        <div class="da-tags" id="da-tags">
+          <span class="da-tags-title">关注的方向 <small>可选，可多选，由你们自己决定。暂不在网站上显示；道场多了以后，读者可以按这些方向查找道场。</small></span>
+          {%- for t in dojoTags.list %}
+          <label class="check"><input type="checkbox" name="tag" value="{{ t.name }}"> {{ t.name }} <small>{{ t.hint }}</small></label>
+          {%- endfor %}
+        </div>
       </fieldset>
 
       <fieldset class="da-group">

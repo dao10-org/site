@@ -84,6 +84,17 @@ test("管理员读取、保存道场资料（一次提交），上传图片并�
   const img = repo.get("src" + saved.logo);
   assert.ok(!Buffer.from(img).includes(Buffer.from("Exif")), "EXIF 被删除");
 
+  // 标签：可多选，重复的合并；太长、太多都拒绝
+  r = await admin("/api/dojo/save", { slug: "yuan", version: r.data.version, profile: { ...r.data.profile, tags: ["人与人", "人与自然", "人与人"] } });
+  assert.equal(r.data.status, "saved", JSON.stringify(r.data));
+  assert.deepEqual(r.data.profile.tags, ["人与人", "人与自然"]);
+  const v = r.data.version;
+  r = await admin("/api/dojo/save", { slug: "yuan", version: v, profile: { ...r.data.profile, tags: ["这是一个超过十个字的很长的标签"] } });
+  assert.equal(r.status, 400);
+  r = await admin("/api/dojo/save", { slug: "yuan", version: v, profile: { ...PROFILE, tags: ["一", "二", "三", "四", "五", "六", "七"] } });
+  assert.equal(r.status, 400);
+  r = await admin("/api/dojo?slug=yuan");
+
   // 删除一张图片：同时从仓库删除文件
   r = await admin("/api/dojo/save", { slug: "yuan", version: r.data.version, profile: { ...r.data.profile, images: [] } });
   assert.equal(r.data.status, "saved");

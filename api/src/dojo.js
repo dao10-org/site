@@ -62,7 +62,7 @@ async function readProfile(env, slug) {
 }
 
 function emptyProfile(slug) {
-  return { title: slug, subtitle: "", kind: "", location: "", joined: today(), summary: "", intro: "", website: "", logo: "", images: [], contacts: [], relay: false };
+  return { title: slug, subtitle: "", kind: "", location: "", joined: today(), summary: "", intro: "", website: "", logo: "", images: [], contacts: [], relay: false, tags: [] };
 }
 
 // ---------------- 保存道场资料 ----------------
@@ -121,14 +121,17 @@ export async function saveDojo(request, body, env) {
       .map((c) => ({ label: text(c && c.label, "联系方式名称", 0, 20), value: text(c && c.value, "联系方式", 0, 300) }))
       .filter((c) => c.value),
     relay: !!p.relay,
+    // 标签：道场自己选的“关注方向”。可选列表在网站 src/_data/dojoTags.json，这里只检查格式
+    tags: [...new Set((Array.isArray(p.tags) ? p.tags : []).map((t) => text(t, "标签", 1, 10)))],
   };
+  if (profile.tags.length > 6) throw new HttpError(400, "标签最多 6 个");
   if (profile.intro.length > 20000) throw new HttpError(400, "详细介绍不能超过 20000 字");
   for (const c of profile.contacts) if (/^(javascript|data|vbscript):/i.test(c.value)) throw new HttpError(400, "联系方式格式不对");
 
   // AI 审核（只看文字：名称、简介、介绍、联系方式、图片说明）
   const all = [
     profile.subtitle,
-    `类型：${profile.kind}　所在地：${profile.location}`,
+    `类型：${profile.kind}　所在地：${profile.location}　标签：${profile.tags.join("、")}`,
     profile.summary,
     profile.intro,
     profile.images.map((i) => i.caption).filter(Boolean).join("\n"),

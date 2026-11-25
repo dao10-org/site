@@ -174,10 +174,14 @@
   $("da-contact-add").addEventListener("click", () => contactRow({}));
 
   // ---------------- 填表 / 读表 ----------------
+  let tagsExtra = [];
   function fill(p) {
     ["title", "subtitle", "kind", "location", "summary", "intro", "website"].forEach((k) => (form.elements[k].value = p[k] || ""));
     form.elements.relay.checked = !!p.relay;
     relayOn = !!p.relay;
+    // 标签：勾上已选的；列表里没有的旧标签原样保留（不会因为改了列表就丢掉）
+    tagsExtra = (p.tags || []).filter((t) => ![...form.querySelectorAll("input[name=tag]")].some((c) => c.value === t));
+    form.querySelectorAll("input[name=tag]").forEach((c) => (c.checked = (p.tags || []).includes(c.value)));
     logo = p.logo || "";
     images = (p.images || []).map((x) => ({ ...x }));
     $("da-contacts").textContent = "";
@@ -191,6 +195,7 @@
     const p = {};
     ["title", "subtitle", "kind", "location", "summary", "intro", "website"].forEach((k) => (p[k] = form.elements[k].value));
     p.relay = form.elements.relay.checked;
+    p.tags = [...form.querySelectorAll("input[name=tag]:checked")].map((c) => c.value).concat(tagsExtra);
     p.logo = logo;
     p.images = images.map(({ src, caption }) => ({ src, caption }));
     p.contacts = [...$("da-contacts").children].map((r) => {

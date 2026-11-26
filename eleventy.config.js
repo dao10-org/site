@@ -75,6 +75,9 @@ export default function (eleventyConfig) {
   );
 
   eleventyConfig.addFilter("head", (arr, n) => (arr || []).slice(0, n));
+  // 取出某个字段的所有不同取值（保持先后顺序），例如共道推荐里出现过的平台
+  eleventyConfig.addFilter("uniqBy", (arr, key) => [...new Set((arr || []).map((x) => x[key]).filter(Boolean))]);
+  eleventyConfig.addFilter("findBy", (arr, key, value) => (arr || []).find((x) => x[key] === value));
 
   // 纯文本摘要（用于列表、搜索索引）
   const plain = (html) =>

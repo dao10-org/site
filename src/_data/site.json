@@ -23,6 +23,10 @@
         "label": "道场"
       },
       {
+        "url": "/zh/recommend/",
+        "label": "共道推荐"
+      },
+      {
         "url": "/zh/charter/",
         "label": "共道宪章"
       },

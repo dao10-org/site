@@ -10,6 +10,7 @@
 import { submit, mySubmissions, withdraw, withdrawAnon, publishDue, purgeDue, stats } from "./submit.js";
 import { getDojo, saveDojo, setMember, postMessage, messageAction, purgeOldMessages } from "./dojo.js";
 import { hit, getStats, purgeOldHits } from "./stats.js";
+import { recommend, myRecommends, recommendAction } from "./recommend.js";
 
 const COOKIE = "gd_s";
 const SESSION_DAYS = 30;
@@ -42,11 +43,13 @@ async function route(request, env) {
   if (method === "GET" && path === "/api/moderation-stats") return stats(env);
   if (method === "GET" && path === "/api/dojo") return getDojo(request, url, env);
   if (method === "GET" && path === "/api/stats") return getStats(request, url, env);
+  if (method === "GET" && path === "/api/recommend/mine") return myRecommends(request, env);
   if (method !== "POST") throw new HttpError(404, "没有这个接口");
 
   checkOrigin(request, env);
-  // 道场资料可能带图片，单独放宽大小限制
-  const body = await readJson(request, path === "/api/dojo/save" ? 16 * 1024 * 1024 : 10000);
+  // 道场资料、共道推荐可能带图片，单独放宽大小限制
+  const max = path === "/api/dojo/save" ? 16 * 1024 * 1024 : path === "/api/recommend" ? 3 * 1024 * 1024 : 10000;
+  const body = await readJson(request, max);
 
   switch (path) {
     case "/api/register":
@@ -80,6 +83,11 @@ async function route(request, env) {
     case "/api/dojo/message":
       await limit(request, env, "message");
       return postMessage(body, env);
+    case "/api/recommend":
+      await limit(request, env, "recommend");
+      return recommend(request, body, env);
+    case "/api/recommend/action":
+      return recommendAction(request, body, env);
     case "/api/hit":
       return hit(request, body, env);
     case "/api/withdraw-anon":
@@ -182,6 +190,7 @@ async function deleteAccount(request, body, env) {
     env.DB.prepare("DELETE FROM sessions WHERE user_id = ?").bind(user.id),
     env.DB.prepare("DELETE FROM dojo_admins WHERE user_id = ?").bind(user.id),
     env.DB.prepare("UPDATE submissions SET user_id = NULL WHERE user_id = ?").bind(user.id), // 已发表文章保留
+    env.DB.prepare("UPDATE recommends SET user_id = NULL WHERE user_id = ?").bind(user.id), // 推荐条目保留
     env.DB.prepare("DELETE FROM users WHERE id = ?").bind(user.id),
   ]);
   return json({ ok: true }, 200, clearCookie());

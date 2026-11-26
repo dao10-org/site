@@ -10,3 +10,7 @@
 
 # 邀请函短网址（邀请文字和邀请卡二维码都用它）
 /invite          /zh/invite/   302
+
+# 共道推荐短网址
+/tuijian         /zh/recommend/   302
+/recommend       /zh/recommend/   302

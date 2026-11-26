@@ -1,0 +1,105 @@
+{
+  "_说明": "共道推荐可选的平台。host 是网址的域名规则（正则），填了链接时自动选好平台；没有网址的平台（如视频号）读者按账号名搜索。以后加平台只改这里，不用改服务器（服务器只检查 12 字以内）。",
+  "list": [
+    {
+      "name": "微信视频号",
+      "host": "channels\\.weixin\\.qq\\.com$",
+      "search": "微信里搜索视频号"
+    },
+    {
+      "name": "微信公众号",
+      "host": "mp\\.weixin\\.qq\\.com$",
+      "search": "微信里搜索公众号"
+    },
+    {
+      "name": "抖音",
+      "host": "(douyin|iesdouyin)\\.com$",
+      "search": "抖音里搜索"
+    },
+    {
+      "name": "快手",
+      "host": "(kuaishou|gifshow)\\.com$",
+      "search": "快手里搜索"
+    },
+    {
+      "name": "小红书",
+      "host": "(xiaohongshu\\.com|xhslink\\.com)$",
+      "search": "小红书里搜索"
+    },
+    {
+      "name": "哔哩哔哩",
+      "host": "(bilibili\\.com|b23\\.tv)$",
+      "search": "哔哩哔哩里搜索"
+    },
+    {
+      "name": "微博",
+      "host": "weibo\\.(com|cn)$",
+      "search": "微博里搜索"
+    },
+    {
+      "name": "知乎",
+      "host": "zhihu\\.com$",
+      "search": "知乎里搜索"
+    },
+    {
+      "name": "喜马拉雅",
+      "host": "ximalaya\\.com$",
+      "search": "喜马拉雅里搜索"
+    },
+    {
+      "name": "小宇宙",
+      "host": "xiaoyuzhoufm\\.com$",
+      "search": "小宇宙里搜索"
+    },
+    {
+      "name": "YouTube",
+      "host": "(youtube\\.com|youtu\\.be)$",
+      "search": "YouTube 里搜索"
+    },
+    {
+      "name": "X（Twitter）",
+      "host": "(x\\.com|twitter\\.com)$",
+      "search": "X 里搜索"
+    },
+    {
+      "name": "Facebook",
+      "host": "(facebook\\.com|fb\\.watch)$",
+      "search": "Facebook 里搜索"
+    },
+    {
+      "name": "Instagram",
+      "host": "instagram\\.com$",
+      "search": "Instagram 里搜索"
+    },
+    {
+      "name": "TikTok",
+      "host": "tiktok\\.com$",
+      "search": "TikTok 里搜索"
+    },
+    {
+      "name": "Telegram",
+      "host": "(t\\.me|telegram\\.me)$",
+      "search": "Telegram 里搜索"
+    },
+    {
+      "name": "Substack",
+      "host": "substack\\.com$",
+      "search": "Substack 里搜索"
+    },
+    {
+      "name": "播客",
+      "host": "podcasts\\.apple\\.com$",
+      "search": "播客应用里搜索"
+    },
+    {
+      "name": "网站",
+      "host": "",
+      "search": "搜索"
+    },
+    {
+      "name": "其他",
+      "host": "",
+      "search": "搜索"
+    }
+  ]
+}

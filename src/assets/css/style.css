@@ -285,3 +285,24 @@ button.btn:disabled { opacity: .5; cursor: not-allowed; }
 .gd-bars span { flex: 1; background: var(--accent); border-radius: 2px 2px 0 0; min-width: 2px; opacity: .85; }
 .gd-bars span:hover { opacity: 1; }
 .gd-bars-axis { display: flex; justify-content: space-between; margin-top: 2px; font-size: 12px; }
+
+/* ---- 共道推荐 ---- */
+.rec-note p { margin: 10px 0; }
+.rec-filter { display: flex; flex-wrap: wrap; gap: 6px; margin: 22px 0 14px; }
+.tag-btn { font: 14px var(--sans); background: var(--card); color: var(--ink); border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px; cursor: pointer; }
+.tag-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.rec-cards { margin-top: 16px; }
+.card.rec:hover { border-color: var(--line); }
+.card.rec:target { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.rec-img { width: calc(100% + 36px); margin: -16px -18px 4px; max-height: 190px; object-fit: cover; border-radius: var(--radius) var(--radius) 0 0; }
+.rec-head { display: flex; flex-wrap: wrap; gap: 4px; }
+.badge.joined { background: var(--accent); color: #fff; }
+.rec-account { margin: 0; font-size: 14px; color: #57534a; word-break: break-all; }
+.rec-tags { margin: 0; }
+.link-btn { background: none; border: 0; padding: 0 4px; color: var(--accent); font: 13px var(--sans); cursor: pointer; text-decoration: underline; }
+.link-btn.bad { color: var(--accent-2); }
+.rec-tools { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; border-top: 1px dashed var(--line); padding-top: 6px; margin-top: 4px; }
+.rec-tools input { font: 13px var(--sans); padding: 2px 6px; border: 1px solid var(--line); border-radius: 4px; }
+
+/* 带 hidden 属性的元素一律隐藏（.card 等设置了 display，会盖过浏览器默认的隐藏） */
+[hidden] { display: none !important; }

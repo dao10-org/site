@@ -179,7 +179,7 @@ function checkUrl(v, name) {
 }
 
 // 图片：只收 JPEG / PNG（页面会先在浏览器里缩小并重新编码），并去掉拍摄地点等元数据
-function decodeImage(dataUrl) {
+export function decodeImage(dataUrl) {
   const m = String(dataUrl).match(/^data:image\/(jpeg|png);base64,([A-Za-z0-9+/=]+)$/);
   if (!m) throw new HttpError(400, "图片只支持 JPG 或 PNG");
   const bytes = Uint8Array.from(atob(m[2]), (c) => c.charCodeAt(0));
@@ -305,7 +305,7 @@ export async function purgeOldMessages(env) {
 }
 
 // ---------------- GitHub ----------------
-async function gh(env, method, path, body) {
+export async function gh(env, method, path, body) {
   const res = await fetch(`https://api.github.com/repos/${REPO}${path}`, {
     method,
     headers: {

@@ -1,0 +1,56 @@
+---
+layout: layouts/base.njk
+title: 共道推荐
+permalink: /zh/recommend/
+description: 道友们推荐的与道有关的网站、视频号、公众号、抖音号、YouTube 频道等。这里只是索引，不是入驻的道场。
+---
+<div class="recommend">
+  <h1>共道推荐</h1>
+  <p class="lead">道友们推荐的与道有关的网站、视频号、公众号、抖音号、YouTube 频道等。共 {{ recommends.length }} 条，新推荐的在前。</p>
+  <div class="notice rec-note">
+    <p><strong>这里只是索引，不是道场。</strong>被推荐的账号<strong>没有入驻</strong>本平台，也没有签署《<a href="/zh/charter/">共道宪章</a>》；收录不代表对方知情或同意，也不代表平台认同其内容。介绍文字由推荐人撰写，AI 只审核这段文字，不审核对方的视频和文章。</p>
+    <p>如果你是被推荐的本人，不希望被收录，请写信到 <a href="mailto:report@dao10.org">report@dao10.org</a>，我们会移除，并且以后不再收录，不问原因。如果你愿意签署宪章、开设自己的道场，请看<a href="/zh/invite/">邀请函</a>。</p>
+    <p><a class="btn" href="/zh/recommend/new/">我要推荐</a></p>
+  </div>
+
+  {%- set used = recommends | uniqBy("platform") -%}
+  {% if used.length > 1 %}
+  <div class="rec-filter" id="rec-filter" role="group" aria-label="按平台筛选">
+    <button type="button" class="tag-btn" aria-pressed="true" data-p="">全部</button>
+    {% for p in used %}<button type="button" class="tag-btn" aria-pressed="false" data-p="{{ p }}">{{ p }}</button>{% endfor %}
+  </div>
+  {% endif %}
+
+  {% if recommends.length %}
+  <div class="cards rec-cards">
+  {% for r in recommends %}
+    <article class="card rec" id="r-{{ r.id }}" data-id="{{ r.id }}" data-p="{{ r.platform }}">
+      {% if r.image %}<img class="rec-img" src="{{ r.image }}" alt="" loading="lazy">{% endif %}
+      <div class="rec-head">
+        <span class="badge">{{ r.platform }}</span>
+        {% if r.status == "joined" and r.dojo %}<a class="badge joined" href="/zh/dojos/{{ r.dojo }}/">已入驻 · 进入道场</a>{% endif %}
+      </div>
+      <strong>{% if r.link %}<a href="{{ r.link }}" rel="noopener nofollow" target="_blank">{{ r.name }} ↗</a>{% else %}{{ r.name }}{% endif %}</strong>
+      {% if r.account %}
+      {%- set pf = recommendPlatforms.list | findBy("name", r.platform) -%}
+      <p class="rec-account">{{ pf.search if pf else "搜索" }}：<b>{{ r.account }}</b> <button type="button" class="link-btn" data-copytext="{{ r.account }}">复制</button></p>
+      {% endif %}
+      <span>{{ r.intro }}</span>
+      {% if r.tags.length %}<p class="rec-tags">{% for t in r.tags %}<span class="badge muted">{{ t }}</span>{% endfor %}</p>{% endif %}
+      <small>{{ r.by or "一位道友" }} 推荐 · {{ r.date }}</small>
+      <div class="rec-tools" hidden></div>
+    </article>
+  {% endfor %}
+  </div>
+  {% else %}
+  <p class="meta">还没有推荐。看到好的网站、视频号或频道，<a href="/zh/recommend/new/">推荐给大家</a>。</p>
+  {% endif %}
+
+  <div id="rec-admin" class="notice" hidden>
+    <h2>平台管理员</h2>
+    <p class="meta">“已邀请”只有平台管理员看得到。“移除（对方要求）”会删除条目，以后也不能再推荐，直到解除。</p>
+    <div id="rec-blocked"></div>
+  </div>
+  <p id="rec-msg" class="acc-msg" role="status" aria-live="polite"></p>
+</div>
+<script src="/assets/js/recommend.js?v={{ v }}" defer></script>

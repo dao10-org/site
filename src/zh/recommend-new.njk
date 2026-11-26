@@ -1,0 +1,59 @@
+---
+layout: layouts/base.njk
+title: 我要推荐
+permalink: /zh/recommend/new/
+description: 推荐一个与道有关的网站、视频号、公众号、抖音号或 YouTube 频道。
+eleventyExcludeFromCollections: true
+---
+<div class="submit prose">
+  <h1>我要推荐</h1>
+  <p class="lead">看到与道有关的好网站、视频号、公众号、抖音号、YouTube 频道……推荐给大家。一条推荐就是：名称、链接（或账号名）和一段推荐理由，可以配一张图。</p>
+
+  <details class="howto">
+    <summary>推荐须知（请先阅读）</summary>
+    <ol>
+      <li><strong>只是索引，不是道场</strong>：被推荐的账号不算入驻本平台，也不需要签署《共道宪章》。页面会写明这一点。</li>
+      <li><strong>审核</strong>：AI 按人权与共生的底线审核你写的文字（名称、账号、推荐理由），通过即收录。AI 看不到对方的视频和文章，请推荐你自己看过、认为有价值的内容。</li>
+      <li><strong>不重复</strong>：同一个链接，或同一平台的同名账号，只收录一次。已经有人推荐过的，会直接带你去看那一条。</li>
+      <li><strong>图片</strong>（可选）：一张能说明对方的图，例如频道封面或作品截图。请不要用拍到他人的私人照片。图片里的拍摄地点等信息会自动去掉。</li>
+      <li><strong>署名</strong>：默认显示你的显示名，也可以选择只显示“一位道友”。</li>
+      <li><strong>撤回与移除</strong>：你可以在“共道推荐”页面撤回自己的推荐。被推荐的本人如果不愿被收录，可以写信到 report@dao10.org，平台会移除，并且以后不再收录。</li>
+      <li><strong>额度</strong>：每个账号每天最多推荐 5 条。</li>
+    </ol>
+  </details>
+
+  <div id="rec-offline" class="notice" hidden><p>推荐只能在主站 <a href="https://dao10.org/zh/recommend/new/">dao10.org</a> 上进行。</p></div>
+  <div id="rec-guest" class="notice" hidden><p>推荐需要先<a href="/zh/account/">登录或注册</a>。注册只要用户名和密码，不需要邮箱和手机号。</p></div>
+
+  <form id="rec-form" class="acc-form wide" hidden>
+    <label>链接 <small>完整网址，例如 https://www.youtube.com/@……。视频号等没有网址的，可以留空。</small>
+      <input name="link" type="url" inputmode="url" placeholder="https://"></label>
+    <label>平台
+      <select name="platform" required>
+        {% for p in recommendPlatforms.list %}<option value="{{ p.name }}" data-host="{{ p.host }}">{{ p.name }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>名称 <small>频道、账号或网站的名字</small><input name="name" maxlength="40" required></label>
+    <label>账号名称或 ID <small>读者在对应平台上搜索用的。没有链接时必填（例如视频号的名称）。</small><input name="account" maxlength="60"></label>
+    <label>推荐理由 <small>10–300 字：它讲什么、为什么值得看</small>
+      <textarea name="intro" rows="4" maxlength="300" required></textarea></label>
+    <fieldset class="radios">
+      <legend>标签（可选，可多选）</legend>
+      {% for t in dojoTags.list %}<label class="check"><input type="checkbox" name="tags" value="{{ t.name }}"> {{ t.name }} <small class="meta">{{ t.hint }}</small></label>{% endfor %}
+    </fieldset>
+    <label>图片（可选，一张） <input name="image" type="file" accept="image/jpeg,image/png"></label>
+    <p id="rec-preview" hidden><img alt="" style="max-width:260px;max-height:180px;border-radius:8px"> <button type="button" class="link-btn" id="rec-img-clear">不用这张</button></p>
+    <fieldset class="radios">
+      <legend>署名</legend>
+      <label class="check"><input type="radio" name="sign" value="name" checked> 显示我的显示名：<b id="rec-name"></b></label>
+      <label class="check"><input type="radio" name="sign" value="hide"> 只显示“一位道友”</label>
+    </fieldset>
+    <label class="check"><input type="checkbox" name="agree" required> 我已阅读推荐须知</label>
+    <button class="btn" type="submit">提交推荐</button>
+  </form>
+
+  <div id="rec-result" hidden></div>
+  <p id="rec-msg" class="acc-msg" role="status" aria-live="polite"></p>
+  <p><a href="/zh/recommend/">← 返回共道推荐</a></p>
+</div>
+<script src="/assets/js/recommend.js?v={{ v }}" defer></script>

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="t d">
+  <title id="t">四根支柱：自然规律、人权底线、灵肉平衡、透明治理，中心是共生</title>
+  <desc id="d">自然规律（客观秩序与生态平衡）、人权底线（个体尊严，不可逾越）、灵肉平衡（身心调和与精神自足）、透明治理（公开、可查、共同约定）围绕中心“共生”。</desc>
+  <style>
+    text { font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif; fill: #24302a; }
+    .num { font-size: 26px; fill: #8a9a8f; font-family: Georgia, serif; }
+    .h { font-size: 52px; font-weight: 700; fill: #2c5e3c; }
+    .h.red { fill: #a8432f; }
+    .s { font-size: 24px; }
+    .r { font-size: 19px; fill: #5e6b63; }
+    .g { stroke: #3b7a4f; fill: none; stroke-width: 3; }
+    .gf { fill: #3b7a4f; }
+    .rf { fill: #a8432f; }
+    .rl { stroke: #a8432f; fill: none; stroke-width: 3; }
+    .link { stroke: #b9c4bc; stroke-width: 2; stroke-dasharray: 6 8; fill: none; }
+  </style>
+  <rect width="1200" height="720" fill="#faf8f2"/>
+  <rect x="16" y="16" width="1168" height="688" fill="none" stroke="#d9dfd9" stroke-width="2"/>
+
+  <!-- 连接线 -->
+  <path class="link" d="M510 270 L455 240 M690 270 L745 240 M510 450 L455 480 M690 450 L728 462"/>
+
+  <!-- 中心：共生 -->
+  <circle cx="600" cy="360" r="128" fill="#faf8f2" stroke="#3b7a4f" stroke-width="3"/>
+  <circle cx="600" cy="360" r="112" fill="none" stroke="#3b7a4f" stroke-width="1" stroke-dasharray="3 6"/>
+  <text x="600" y="322" text-anchor="middle" class="r">方向</text>
+  <text x="600" y="385" text-anchor="middle" style="font-size:64px;font-weight:700;fill:#2c5e3c">共生</text>
+  <text x="600" y="420" text-anchor="middle" class="r" style="font-size:15px">人与自然 · 人与人 · 灵与身</text>
+
+  <!-- 01 自然规律（左上） -->
+  <g transform="translate(70 70)">
+    <circle cx="60" cy="60" r="52" class="g"/>
+    <circle cx="60" cy="60" r="30" class="g" stroke-dasharray="4 6"/>
+    <circle cx="60" cy="60" r="12" class="gf"/>
+    <circle cx="112" cy="60" r="8" class="gf"/>
+    <text x="140" y="38" class="num">01</text>
+    <text x="140" y="96" class="h">自然规律</text>
+    <text x="140" y="136" class="s">客观秩序与生态平衡</text>
+    <text x="140" y="168" class="r">认识世界的根基</text>
+  </g>
+
+  <!-- 02 人权底线（右上） -->
+  <g transform="translate(700 70)">
+    <path d="M60 8 L108 26 L104 72 Q98 104 60 120 Q22 104 16 72 L12 26 Z" class="rl"/>
+    <circle cx="60" cy="56" r="14" class="rf"/>
+    <text x="140" y="38" class="num">02</text>
+    <text x="140" y="96" class="h red">人权底线</text>
+    <text x="140" y="136" class="s">个体尊严，不可逾越</text>
+    <text x="140" y="168" class="r">所有探讨的边界</text>
+  </g>
+
+  <!-- 03 灵肉平衡（左下） -->
+  <g transform="translate(70 450)">
+    <circle cx="60" cy="30" r="13" class="gf"/>
+    <path d="M28 112 Q30 58 60 54 Q90 58 92 112" class="g"/>
+    <path d="M4 70 Q20 58 36 70 M84 70 Q100 58 116 70 M0 92 Q18 80 34 92 M86 92 Q102 80 120 92" class="g" stroke-width="2"/>
+    <text x="140" y="38" class="num">03</text>
+    <text x="140" y="96" class="h">灵肉平衡</text>
+    <text x="140" y="136" class="s">身心调和与精神自足</text>
+    <text x="140" y="168" class="r">每个人的日常落脚点</text>
+  </g>
+
+  <!-- 04 透明治理（右下） -->
+  <g transform="translate(700 450)">
+    <rect x="10" y="14" width="96" height="104" rx="4" class="g"/>
+    <path d="M26 40 H90 M26 60 H90 M26 80 H90 M26 100 H66" class="g" stroke-width="2"/>
+    <circle cx="106" cy="14" r="9" class="gf"/>
+    <text x="140" y="38" class="num">04</text>
+    <text x="140" y="96" class="h">透明治理</text>
+    <text x="140" y="136" class="s">公开、可查、共同约定</text>
+    <text x="140" y="168" class="r">让前三者不变质的制度</text>
+  </g>
+</svg>

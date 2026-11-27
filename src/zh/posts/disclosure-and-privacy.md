@@ -2,7 +2,7 @@
 title: 公开什么，向谁公开，怎样保护隐私
 subtitle: 共道文明经费规范建议之三
 date: 2026-11-27T10:20:00Z
-anonymous: true
+author: 共道文明
 description: 公开可以只对团体内部，也可以对捐款人或对社会。无论哪一种，公开的都应当是完整、可以核对的账目；同时保护捐款人的隐私，不承诺回报，不改变用途。
 ---
 本文是《[账目清楚，道义才立得住](/zh/library/clear-accounts/)》和《[一套简单的记账方法](/zh/library/simple-bookkeeping/)》的续篇，讲账目记好之后，怎样公开。

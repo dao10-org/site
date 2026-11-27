@@ -8,6 +8,7 @@
     "en": "A commons for the civilization of the Dao — keep, show, connect"
   },
   "prototype": true,
+  "indexable": true,
   "nav": {
     "zh": [
       {
